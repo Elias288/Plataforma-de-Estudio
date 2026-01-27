@@ -1,0 +1,84 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  PROFESOR
+  ALUMNO
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  role      Role
+  createdAt DateTime @default(now())
+
+  coursesTaught Course[]        @relation("ProfessorCourses")
+  enrollments   CourseStudent[]
+  submissions   Submission[]
+}
+
+model Course {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  createdAt   DateTime @default(now())
+
+  professorId String
+  professor   User   @relation("ProfessorCourses", fields: [professorId], references: [id])
+
+  students CourseStudent[]
+  tasks    Task[]
+}
+
+model CourseStudent {
+  id        String @id @default(uuid())
+  courseId  String
+  studentId String
+
+  course  Course @relation(fields: [courseId], references: [id])
+  student User   @relation(fields: [studentId], references: [id])
+
+  @@unique([courseId, studentId])
+}
+
+model Task {
+  id          String    @id @default(uuid())
+  title       String
+  description String
+  dueDate     DateTime?
+  createdAt   DateTime  @default(now())
+
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id])
+
+  submissions Submission[]
+}
+
+model Submission {
+  id          String   @id @default(uuid())
+  githubUrl   String
+  description String
+  grade       Int?
+  createdAt   DateTime @default(now())
+
+  taskId    String
+  studentId String
+
+  task    Task @relation(fields: [taskId], references: [id])
+  student User @relation(fields: [studentId], references: [id])
+
+  @@unique([taskId, studentId])
+}
