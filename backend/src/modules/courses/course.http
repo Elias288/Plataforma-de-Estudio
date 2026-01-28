@@ -6,7 +6,7 @@ POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-  "email": "admin@instituto.com",
+  "email": "profesor@instituto.com",
   "password": "123456"
 }
 
@@ -35,7 +35,7 @@ content-type: application/json
 }
 
 ###
-
+# Course Id
 @courseId=741e9f1b-138b-4dec-96cc-cd11bddc0494
 
 ###
@@ -62,3 +62,56 @@ content-type: application/json
 ###
 GET http://localhost:3000/courses/{{courseId}}/tasks
 Authorization: Bearer {{token}}
+
+###
+# Task Id
+@taskId=2c0edcf5-2488-4f46-93b3-d376a0e58b1e
+
+###
+
+# @name loginAlumno
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "alumno@instituto.com",
+  "password": "123456"
+}
+
+### 
+
+@tokenAlumno = {{loginAlumno.response.body.token}}
+
+###
+# Get Submissions of Task
+###
+GET http://localhost:3000/courses/{{courseId}}/tasks/{{taskId}}/submissions
+Authorization: Bearer {{token}}
+
+###
+# Submit Submissions of Task
+###
+POST http://localhost:3000/courses/{{courseId}}/tasks/{{taskId}}/submissions
+Authorization: Bearer {{tokenAlumno}}
+content-type: application/json
+
+{
+  "description": "API REST con Express",
+  "repoUrl": "http://repo1"
+}
+
+###
+# Submission Id
+@submissionId=a7ebcecb-8ccb-4ca0-9dc7-4666df2e845b
+
+###
+# Update Submissions of Task
+###
+PATCH http://localhost:3000/courses/{{courseId}}/tasks/{{taskId}}/submissions/{{submissionId}}/grade
+Authorization: Bearer {{token}}
+content-type: application/json
+
+{
+  "grade": 85,
+  "feedback": "Horrible, dedicate a la cocina"
+}

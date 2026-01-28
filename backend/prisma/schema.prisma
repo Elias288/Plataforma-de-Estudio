@@ -71,10 +71,11 @@ model Task {
 
 model Submission {
   id          String   @id @default(uuid())
-  githubUrl   String
+  repoUrl     String
   description String
   grade       Int?
   createdAt   DateTime @default(now())
+  feedback    String?
 
   taskId    String
   studentId String
