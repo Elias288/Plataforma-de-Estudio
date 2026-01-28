@@ -35,7 +35,30 @@ content-type: application/json
 }
 
 ###
+
+@courseId=741e9f1b-138b-4dec-96cc-cd11bddc0494
+
+###
 # Get Course By Id
 ###
-GET http://localhost:3000/courses/38da4ccd-0f0e-41a1-a3b0-f050fb964f0f
+GET http://localhost:3000/courses/{{courseId}}
+Authorization: Bearer {{token}}
+
+###
+# Add Task of Course
+###
+POST http://localhost:3000/courses/{{courseId}}/tasks
+Authorization: Bearer {{token}}
+content-type: application/json
+
+{
+  "title": "TP 1",
+  "description": "API REST con Express",
+  "dueDate": "2026-02-10T23:59:00.000Z"
+}
+
+###
+# Get Tasks of course
+###
+GET http://localhost:3000/courses/{{courseId}}/tasks
 Authorization: Bearer {{token}}

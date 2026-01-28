@@ -5,6 +5,7 @@ import { Role } from '@prisma/client';
 import { CourseController } from './course.controller';
 import { validateParams } from '../../middlewares/params.middleware';
 import { courseIdSchema } from './course.dto';
+import taskRouter from '../tasks/task.routes';
 
 const router = Router();
 
@@ -23,5 +24,7 @@ router.post(
   authorizeRole([Role.ADMIN, Role.PROFESOR]),
   CourseController.create,
 );
+
+router.use('/:id/tasks', taskRouter);
 
 export default router;
