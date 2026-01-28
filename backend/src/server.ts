@@ -1,6 +1,13 @@
 import { app } from './app';
+import { connectDatabase } from './config/db';
 import { env } from './config/env';
 
-app.listen(env.PORT, () => {
-  console.log(`🚀 Backend escuchando en ${env.BACKEND_URL}`);
-});
+async function bootstrap() {
+  await connectDatabase();
+
+  app.listen(env.PORT, () => {
+    console.log(`🚀 Backend escuchando en ${env.BACKEND_URL}`);
+  });
+}
+
+bootstrap();
