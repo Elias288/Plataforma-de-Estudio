@@ -1,0 +1,35 @@
+###
+# LOGIN
+###
+# @name login
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@test.com",
+  "password": "123456"
+}
+
+### 
+
+@token = {{login.response.body.token}}
+
+###
+# Get Courses
+###
+GET http://localhost:3000/courses
+Authorization: Bearer {{token}}
+
+###
+# Create Courses
+###
+POST http://localhost:3000/courses
+Authorization: Bearer {{token}}
+content-type: application/json
+
+{
+  "name": "Backend 1",
+  "description": "Curso de backend con Node.js",
+  "professorId": "fe700a22-7077-49d6-bf15-0d73e2748573",
+  "studentsIds": []
+}

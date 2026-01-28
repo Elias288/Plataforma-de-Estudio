@@ -25,9 +25,10 @@ model User {
   role      Role
   createdAt DateTime @default(now())
 
-  coursesTaught Course[]        @relation("ProfessorCourses")
-  enrollments   CourseStudent[]
-  submissions   Submission[]
+  taughtCourses  Course[]        @relation("ProfessorCourses")
+  courses        Course[]        @relation("StudentCourses")
+  courseStudents CourseStudent[]
+  submissions    Submission[]
 }
 
 model Course {
@@ -38,9 +39,10 @@ model Course {
 
   professorId String
   professor   User   @relation("ProfessorCourses", fields: [professorId], references: [id])
+  students    User[] @relation("StudentCourses")
 
-  students CourseStudent[]
-  tasks    Task[]
+  tasks          Task[]
+  courseStudents CourseStudent[]
 }
 
 model CourseStudent {

@@ -1,12 +1,16 @@
 import express from 'express';
 import cors from 'cors';
 import { authRouter } from './modules/auth/auth.routes';
+import courseRoutes from './modules/courses/course.routes';
+import { errorHandler } from './middlewares/error.middleware';
 
 export const app = express();
 
 app.use(cors());
 app.use(express.json());
+
 app.use('/auth', authRouter);
+app.use('/courses', courseRoutes);
 
 app.get('/', (_req, res) => {
   res.json({
@@ -14,3 +18,5 @@ app.get('/', (_req, res) => {
     message: 'Backend running',
   });
 });
+
+app.use(errorHandler);
