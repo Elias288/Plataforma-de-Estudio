@@ -1,11 +1,10 @@
 import { Role } from '@prisma/client';
 import { prisma } from '../../config/db';
 import { CreateCourseDto } from './course.dto';
+import { AppError } from '../../errors/app.error';
 
 export class CourseService {
   static async create(data: CreateCourseDto) {
-    console.log(data);
-
     const professor = await prisma.user.findUnique({
       where: { id: data.professorId },
     });
@@ -40,5 +39,39 @@ export class CourseService {
         },
       },
     });
+  }
+
+  static async getById(courseId: string, userId: string, role: Role) {
+    const course = await prisma.course.findUnique({
+      where: { id: courseId },
+      include: {
+        professor: {
+          select: {
+            id: true,
+            email: true,
+          },
+        },
+        students: {
+          select: {
+            id: true,
+            email: true,
+          },
+        },
+      },
+    });
+
+    if (!course) throw new AppError('Curso no encontrado', 404);
+
+    if (role === Role.ADMIN) return course;
+
+    if (role === Role.PROFESOR && course.professorId === userId) return course;
+
+    if (
+      role === Role.ALUMNO &&
+      course.students.some((student) => student.id === userId)
+    )
+      return course;
+
+    throw new AppError('Prohibido', 403);
   }
 }

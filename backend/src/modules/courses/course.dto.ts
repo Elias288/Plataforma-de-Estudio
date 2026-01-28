@@ -8,3 +8,7 @@ export const createCourseSchema = z.object({
 });
 
 export type CreateCourseDto = z.infer<typeof createCourseSchema>;
+
+export const courseIdSchema = z.object({
+  id: z.uuid(),
+});

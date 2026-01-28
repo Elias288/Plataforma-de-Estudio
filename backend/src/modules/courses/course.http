@@ -6,7 +6,7 @@ POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-  "email": "admin@test.com",
+  "email": "admin@instituto.com",
   "password": "123456"
 }
 
@@ -33,3 +33,9 @@ content-type: application/json
   "professorId": "fe700a22-7077-49d6-bf15-0d73e2748573",
   "studentsIds": []
 }
+
+###
+# Get Course By Id
+###
+GET http://localhost:3000/courses/38da4ccd-0f0e-41a1-a3b0-f050fb964f0f
+Authorization: Bearer {{token}}
