@@ -1,6 +1,4 @@
-### 
-# REGISTRAR USUARIO
-###
+### REGISTRAR USUARIO ###
 POST http://localhost:3000/auth/register
 Content-Type: application/json
 
@@ -11,12 +9,14 @@ Content-Type: application/json
 }
 
 ###
-# LOGIN
-###
+
+### LOGIN ###
 POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-  "email": "admin@test.com",
+  "email": "admin@instituto.com",
   "password": "123456"
 }
+
+###
