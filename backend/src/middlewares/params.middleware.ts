@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { ZodType } from 'zod';
+import { z, ZodType } from 'zod';
 
 export const validateParams =
   (schema: ZodType<any>) =>
@@ -8,7 +8,7 @@ export const validateParams =
     if (!result.success)
       return res.status(400).json({
         message: 'Parámetros invalidos',
-        errors: result.error.flatten(),
+        errors: z.treeifyError(result.error),
       });
 
     req.params = result.data;

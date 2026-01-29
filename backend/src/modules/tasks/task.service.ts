@@ -4,20 +4,12 @@ import { prisma } from '../../config/db';
 import { AppError } from '../../errors/app.error';
 
 export class TaskService {
-  static async create(
-    courseId: string,
-    userId: string,
-    role: Role,
-    data: CreateTaskDto,
-  ) {
+  static async create(courseId: string, data: CreateTaskDto) {
     const course = await prisma.course.findUnique({
       where: { id: courseId },
     });
 
     if (!course) throw new AppError('Curso no encontrado', 404);
-
-    if (role !== Role.PROFESOR || course.professorId !== userId)
-      throw new AppError('Forbidden', 403);
 
     return prisma.task.create({
       data: {
@@ -35,13 +27,13 @@ export class TaskService {
     });
 
     if (!course) {
-      throw new AppError('Course not found', 404);
+      throw new AppError('Curso no encontrado', 404);
     }
 
     if (
       role === Role.ADMIN ||
-      (role === Role.PROFESOR && course.professorId === userId) ||
-      (role === Role.ALUMNO && course.students.some((s) => s.id === userId))
+      course.professorId === userId ||
+      course.students.some((s) => s.id === userId)
     ) {
       return prisma.task.findMany({
         where: { courseId },
@@ -49,6 +41,6 @@ export class TaskService {
       });
     }
 
-    throw new AppError('Forbidden', 403);
+    throw new AppError('Prohibido', 403);
   }
 }

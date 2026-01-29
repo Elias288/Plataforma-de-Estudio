@@ -10,12 +10,7 @@ export class TaskController {
     if (Array.isArray(courseId))
       return new AppError('Error con el parámetro ingresado', 400);
 
-    const task = await TaskService.create(
-      courseId,
-      user.id,
-      user.role,
-      req.body,
-    );
+    const task = await TaskService.create(courseId, req.body);
 
     res.status(201).json(task);
   }

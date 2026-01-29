@@ -18,6 +18,7 @@ export class CourseController {
     res.json(courses);
   }
 
+  /* Obtener curso por ID */
   static async getById(req: Request, res: Response) {
     const { id } = req.params;
     const user = req.user!;

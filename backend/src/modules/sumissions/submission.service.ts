@@ -6,13 +6,8 @@ export class SubmissionService {
   static async submit(
     taskId: string,
     userId: string,
-    role: Role,
     data: { description: string; repoUrl: string },
   ) {
-    if (role !== Role.ALUMNO) {
-      throw new AppError('Solo los Alumnos pueden realizar entregas', 403);
-    }
-
     const task = await prisma.task.findUnique({
       where: { id: taskId },
       include: {
@@ -53,7 +48,7 @@ export class SubmissionService {
       throw new AppError('Tarea no encontrada', 404);
     }
 
-    if (role !== Role.PROFESOR || task.course.professorId !== userId) {
+    if (task.course.professorId !== userId) {
       throw new AppError('Prohibido', 403);
     }
 
@@ -92,10 +87,7 @@ export class SubmissionService {
       throw new AppError('Entrega no encontrada', 404);
     }
 
-    if (
-      role !== Role.PROFESOR ||
-      submission.task.course.professorId !== userId
-    ) {
+    if (submission.task.course.professorId !== userId) {
       throw new AppError('Prohibido', 403);
     }
 

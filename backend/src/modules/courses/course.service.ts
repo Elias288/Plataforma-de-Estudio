@@ -5,13 +5,6 @@ import { AppError } from '../../errors/app.error';
 
 export class CourseService {
   static async create(data: CreateCourseDto) {
-    const professor = await prisma.user.findUnique({
-      where: { id: data.professorId },
-    });
-
-    /* if (!professor || professor.role !== Role.PROFESOR)
-      throw new Error('Profesor invalido'); */
-
     return prisma.course.create({
       data: {
         name: data.name,
@@ -62,12 +55,9 @@ export class CourseService {
 
     if (!course) throw new AppError('Curso no encontrado', 404);
 
-    if (role === Role.ADMIN) return course;
-
-    if (role === Role.PROFESOR && course.professorId === userId) return course;
-
     if (
-      role === Role.ALUMNO &&
+      role === Role.ADMIN ||
+      course.professorId === userId ||
       course.students.some((student) => student.id === userId)
     )
       return course;

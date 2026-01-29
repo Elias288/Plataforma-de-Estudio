@@ -13,7 +13,6 @@ export class SubmissionController {
     const submission = await SubmissionService.submit(
       taskId,
       user.id,
-      user.role,
       req.body,
     );
 
