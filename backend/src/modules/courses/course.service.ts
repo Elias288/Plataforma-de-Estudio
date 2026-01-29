@@ -1,7 +1,7 @@
 import { Role } from '@prisma/client';
-import { prisma } from '../../config/db';
+import { prisma } from '@/config/db';
 import { CreateCourseDto } from './course.dto';
-import { AppError } from '../../errors/app.error';
+import { AppError } from '@/errors/app.error';
 
 export class CourseService {
   static async create(data: CreateCourseDto) {

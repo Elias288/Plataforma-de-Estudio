@@ -1,11 +1,11 @@
 import { Router } from 'express';
-import { authenticate } from '../../middlewares/auth.middleware';
-import { authorizeRole } from '../../middlewares/role.middleware';
+import { authenticate } from '@/middlewares/auth.middleware';
+import { authorizeRole } from '@/middlewares/role.middleware';
 import { Role } from '@prisma/client';
 import { CourseController } from './course.controller';
-import { validateParams } from '../../middlewares/params.middleware';
+import { validateParams } from '@/middlewares/params.middleware';
 import { courseIdSchema } from './course.dto';
-import taskRouter from '../tasks/task.routes';
+import taskRouter from '@/modules/tasks/task.routes';
 
 const router = Router();
 

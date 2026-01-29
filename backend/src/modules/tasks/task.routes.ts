@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import { authenticate } from '../../middlewares/auth.middleware';
-import { validateParams } from '../../middlewares/params.middleware';
+import { authenticate } from '@/middlewares/auth.middleware';
+import { validateParams } from '@/middlewares/params.middleware';
 import { TaskController } from './task.controller';
-import { courseIdSchema } from '../courses/course.dto';
-import submissionRoutes from '../sumissions/submission.routes';
-import { authorizeRole } from '../../middlewares/role.middleware';
+import { courseIdSchema } from '@/modules/courses/course.dto';
+import submissionRoutes from '@/modules/sumissions/submission.routes';
+import { authorizeRole } from '@/middlewares/role.middleware';
 import { Role } from '@prisma/client';
 
 const router = Router({ mergeParams: true });

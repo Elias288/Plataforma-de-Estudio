@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import { SubmissionController } from './submission.controller';
-import { authenticate } from '../../middlewares/auth.middleware';
-import { validateParams } from '../../middlewares/params.middleware';
+import { authenticate } from '@/middlewares/auth.middleware';
+import { validateParams } from '@/middlewares/params.middleware';
 import { submissionIdSchema } from './submission.dto';
-import { authorizeRole } from '../../middlewares/role.middleware';
+import { authorizeRole } from '@/middlewares/role.middleware';
 import { Role } from '@prisma/client';
 
 const router = Router({ mergeParams: true });

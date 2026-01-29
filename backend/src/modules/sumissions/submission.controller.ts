@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { AppError } from '../../errors/app.error';
+import { AppError } from '@/errors/app.error';
 import { SubmissionService } from './submission.service';
 
 export class SubmissionController {

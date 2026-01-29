@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import { login, register } from './auth.controller';
-import { authorizeRole } from '../../middlewares/role.middleware';
+import { authorizeRole } from '@/middlewares/role.middleware';
 import { Role } from '@prisma/client';
-import { authenticate } from '../../middlewares/auth.middleware';
+import { authenticate } from '@/middlewares/auth.middleware';
 
 export const authRouter = Router();
 

@@ -1,4 +1,4 @@
-import { AppError } from '../../errors/app.error';
+import { AppError } from '@/errors/app.error';
 import { createCourseSchema } from './course.dto';
 import { CourseService } from './course.service';
 import { Request, Response } from 'express';

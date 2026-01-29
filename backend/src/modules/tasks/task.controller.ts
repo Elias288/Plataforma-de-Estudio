@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { TaskService } from './task.service';
-import { AppError } from '../../errors/app.error';
+import { AppError } from '@/errors/app.error';
 
 export class TaskController {
   static async create(req: Request, res: Response) {

@@ -1,6 +1,6 @@
 import { Role } from '@prisma/client';
-import { prisma } from '../../config/db';
-import { AppError } from '../../errors/app.error';
+import { prisma } from '@/config/db';
+import { AppError } from '@/errors/app.error';
 
 export class SubmissionService {
   static async submit(

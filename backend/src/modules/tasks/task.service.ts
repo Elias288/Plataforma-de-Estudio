@@ -1,7 +1,7 @@
 import { Role } from '@prisma/client';
 import { CreateTaskDto } from './task.dto';
-import { prisma } from '../../config/db';
-import { AppError } from '../../errors/app.error';
+import { prisma } from '@/config/db';
+import { AppError } from '@/errors/app.error';
 
 export class TaskService {
   static async create(courseId: string, data: CreateTaskDto) {

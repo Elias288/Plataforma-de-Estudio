@@ -1,8 +1,8 @@
 import { Role } from '@prisma/client';
-import { prisma } from '../../config/db';
+import { prisma } from '@/config/db';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { env } from '../../config/env';
+import { env } from '@/config/env';
 
 export async function registerUser(
   email: string,
