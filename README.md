@@ -28,3 +28,43 @@ Este proyecto va a contar con las siguientes funcionalidades:
 - CRUD de tareas de curso (rol: Profesor+)
 - Entrega de tareas (rol: Alumno+)
 
+## Comenzando
+
+### Prerrequisitos
+
+Antes de comenzar es necesario contar con:
+
+- `podman` instalado
+- Configurar el archivo `env`; para esto se dejó el archivo [.env.template](./backend/.env.template)
+
+### Ambiente de desarrollo
+
+Para ejecutar el backend de manera local y teniendo los [prerrequisitos](#prerrequisitos) configurados pasaremos a ejecutar el siguiente comando que iniciará la base de datos
+
+```sh
+# ./backend/container-compose
+
+podman-compose up -d database
+```
+
+y para cargar los datos de prueba
+
+```sh
+pnpm prisma generate
+```
+
+### Ejecución del backend
+
+Teniendo la base de datos corriendo comenzaremos con la instalación de las dependencias
+
+```sh
+# Instalar dependencias
+pnpm install
+# o
+npm install
+
+# Inicializar backend
+pnpm run dev
+# o
+npm run dev
+```
