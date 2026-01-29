@@ -1,4 +1,4 @@
-# Cursos PuntoCom
+# Plataforma de Cursos
 
 Aplicación full stack de gestión de cursos, profesores, alumnos y tareas entregables.
 
