@@ -3,6 +3,7 @@ import Home from '@/pages/Home';
 import NotFound from '@/pages/NotFound';
 import Login from '@/pages/Login';
 import MainLayout from '@/layouts/MainLayout';
+import Registration from '@/pages/Registration';
 
 const AppRouter = () => {
   return (
@@ -13,6 +14,7 @@ const AppRouter = () => {
         </Route>
 
         <Route path="/login" element={<Login />} />
+        <Route path="/registration" element={<Registration />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
