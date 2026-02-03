@@ -16,10 +16,11 @@ export const Calendar = ({ year, month, markedDates = [] }: Props) => {
   const daysInMonth = new Date(year, month + 1, 0).getDate();
 
   const startDay = (firstDay.getDay() + 6) % 7;
+  const today = new Date().toISOString().split('T')[0];
+  markedDates.push({ date: today, color: '#41bb6a', label: 'Hoy' });
 
   const getMarkedDate = (day: number) => {
     const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-
     return markedDates.find((d) => d.date === dateStr);
   };
 
