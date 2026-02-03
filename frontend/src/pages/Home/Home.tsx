@@ -1,5 +1,6 @@
 import Wall from '@/pages/Home/components/Wall';
 import RightBar from './components/RightBar';
+import Footer from '../../layouts/Footer';
 import LeftBar from './components/LeftBar';
 
 type Props = {};
@@ -15,6 +16,8 @@ const Home = ({}: Props) => {
 
         <RightBar />
       </div>
+
+      <Footer />
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Footer from '../../layouts/Footer';
 import SelectComponent from '@/components/Select.component';
 
 type Option = {
@@ -76,6 +77,7 @@ const CreateUser = ({}: Props) => {
           </div>
         </form>
       </div>
+      <Footer />
     </div>
   );
 };
