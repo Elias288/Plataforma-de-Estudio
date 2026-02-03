@@ -6,13 +6,13 @@ import PathLogo from '@/assets/path.svg?react';
 const NavBar = () => {
   return (
     <nav className="flex justify-center items-end gap-4">
-      <Link to={'/'} className="text-gray-500">
+      <Link to={'/'} className="text-gray-500" title="Inicio">
         <HomeLogo className="w-10 h-10" />
       </Link>
-      <Link to={'/login'} className="text-gray-500">
+      <Link to={'/createUser'} className="text-gray-500" title="Crear Usuario">
         <UserLogo className="w-10 h-10" />
       </Link>
-      <Link to={'/'} className="text-gray-500">
+      <Link to={'/'} className="text-gray-500" title="Cursos">
         <PathLogo className="w-10 h-10" />
       </Link>
     </nav>

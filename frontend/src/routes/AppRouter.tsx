@@ -4,6 +4,7 @@ import NotFound from '@/pages/NotFound';
 import Login from '@/pages/Login';
 import MainLayout from '@/layouts/MainLayout';
 import Registration from '@/pages/Registration';
+import CreateUser from '@/pages/CreateUser/CreateUser';
 
 const AppRouter = () => {
   return (
@@ -11,10 +12,12 @@ const AppRouter = () => {
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/createUser" element={<CreateUser />} />
         </Route>
 
         <Route path="/login" element={<Login />} />
         <Route path="/registration" element={<Registration />} />
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

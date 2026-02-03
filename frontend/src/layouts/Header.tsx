@@ -3,6 +3,7 @@ import NavBar from './NavBar';
 import MenuIcon from '@/assets/menu.svg?react';
 import { useState } from 'react';
 import LeftBar from '@/pages/Home/components/LeftBar';
+import { Link } from 'react-router-dom';
 
 type Props = {};
 export const Header = ({}: Props) => {
@@ -26,7 +27,9 @@ export const Header = ({}: Props) => {
 
       <div className="container__right profile">
         <span className="float-end">
-          <UserLogo />
+          <Link to={'/login'}>
+            <UserLogo />
+          </Link>
         </span>
       </div>
 
