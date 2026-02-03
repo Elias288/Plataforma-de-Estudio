@@ -7,7 +7,7 @@ const MainLayout = () => {
     <>
       <Header />
 
-      <main className="bg-gray-100 overflow-auto h-[92vh] md:h-[90vh] pb-15 md:pb-0">
+      <main className="bg-gray-100 overflow-auto pb-15 pt-5 h-[calc(100vh-80px)] md:pb-0">
         <Outlet />
       </main>
 
