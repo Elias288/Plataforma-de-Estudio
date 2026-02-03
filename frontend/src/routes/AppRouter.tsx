@@ -5,6 +5,7 @@ import Login from '@/pages/Login';
 import MainLayout from '@/layouts/MainLayout';
 import Registration from '@/pages/Registration';
 import CreateUser from '@/pages/CreateUser/CreateUser';
+import CursosPage from '@/pages/Cursos/Cursos.page';
 
 const AppRouter = () => {
   return (
@@ -12,7 +13,11 @@ const AppRouter = () => {
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
+          {/* Solo para administradores y profesores */}
           <Route path="/createUser" element={<CreateUser />} />
+          {/* Solo para administradores y profesores */}
+          <Route path="/crearCurso" element={<CursosPage option="crear" />} />
+          <Route path="/cursos" element={<CursosPage option="listar" />} />
         </Route>
 
         <Route path="/login" element={<Login />} />

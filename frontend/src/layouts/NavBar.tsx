@@ -12,7 +12,7 @@ const NavBar = () => {
       <Link to={'/createUser'} className="text-gray-500" title="Crear Usuario">
         <UserLogo className="w-10 h-10" />
       </Link>
-      <Link to={'/'} className="text-gray-500" title="Cursos">
+      <Link to={'/cursos'} className="text-gray-500" title="Cursos">
         <PathLogo className="w-10 h-10" />
       </Link>
     </nav>
