@@ -1,7 +1,7 @@
 import Wall from '@/pages/Home/components/Wall';
-import RightBar from './components/RightBar';
-import Footer from '../../layouts/Footer';
-import LeftBar from './components/LeftBar';
+import RightBar from '@/layouts/RightBar';
+import Footer from '@/layouts/Footer';
+import LeftBar from '@/layouts/LeftBar';
 
 type Props = {};
 const Home = ({}: Props) => {

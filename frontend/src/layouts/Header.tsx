@@ -2,7 +2,7 @@ import UserLogo from '@/assets/user.svg?react';
 import NavBar from './NavBar';
 import MenuIcon from '@/assets/menu.svg?react';
 import { useState } from 'react';
-import LeftBar from '@/pages/Home/components/LeftBar';
+import LeftBar from '@/layouts/LeftBar';
 import { Link } from 'react-router-dom';
 
 type Props = {};

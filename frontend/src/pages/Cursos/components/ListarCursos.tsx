@@ -1,7 +1,8 @@
 import Search from '@/components/Search';
 import Footer from '@/layouts/Footer';
-import RightBar from '@/pages/Home/components/RightBar';
-import { useNavigate } from 'react-router-dom';
+import LeftBar from '@/layouts/LeftBar';
+import RightBar from '@/layouts/RightBar';
+import { Link, useNavigate } from 'react-router-dom';
 
 type Props = {};
 const ListarCursos = ({}: Props) => {
@@ -9,7 +10,11 @@ const ListarCursos = ({}: Props) => {
 
   return (
     <>
-      <div className="mx-auto w-fit min-h-screen max-w-5xl grid gap-5 px-5 mb-5 md:px-0 md:grid-cols-[28rem_16rem] ">
+      <div className="mx-auto w-fit min-h-screen max-w-5xl grid gap-5 px-5 mb-5 md:px-0 md:grid-cols-[28rem_16rem] xl:grid-cols-[16rem_28rem_16rem]">
+        <div className="hidden xl:block">
+          <LeftBar />
+        </div>
+
         <div className="cursos">
           <div className="wall__top flex flex-wrap gap-x-5 gap-y-3 pb-5 mb-5 border-b-2 border-gray-200">
             <button
@@ -23,11 +28,16 @@ const ListarCursos = ({}: Props) => {
           </div>
 
           <article className="flex flex-col gap-y-4">
-            <section className="bg-white min-h-50 rounded-2xl p-3 shadow-md">
-              <h3>Curso 1</h3>
+            <section>
+              <Link to={'curso1'} className="bg-white block min-h-50 rounded-2xl p-3 shadow-md">
+                <h3>Curso 1</h3>
+              </Link>
             </section>
-            <section className="bg-white min-h-50 rounded-2xl p-3 shadow-md">
-              <h3>Curso 2</h3>
+
+            <section>
+              <Link to={'curso2'} className="bg-white block min-h-50 rounded-2xl p-3 shadow-md">
+                <h3>Curso 2</h3>
+              </Link>
             </section>
           </article>
         </div>

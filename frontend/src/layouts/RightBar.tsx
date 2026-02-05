@@ -17,7 +17,7 @@ const RightBar = () => {
         <h2 className="text-2xl text-gray-500">Últimas tareas</h2>
         <ul className="list-disc list-inside">
           <li>
-            <Link to={'/'} className="text-sky-600">
+            <Link to={'/cursos/curso_1/ejercicio_1'} className="text-sky-600">
               Ejercicio 1
             </Link>
           </li>
