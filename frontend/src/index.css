@@ -1,1 +1,8 @@
 @import "tailwindcss";
+
+@theme {
+    --header-h: 80px;
+    --footer-h: 80px;
+    --main-h: calc(100vh - var(--footer-h));
+    --scroll-min-h: calc(100dvh - 40px - var(--footer-h) - var(--header-h))
+}

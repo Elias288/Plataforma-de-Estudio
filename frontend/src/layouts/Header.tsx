@@ -12,9 +12,12 @@ export const Header = ({}: Props) => {
   const toggleSideBar = () => setShowSideBar(!showSideBar);
 
   return (
-    <div className="container__header h-20 border-b-3 py-3 px-5 grid grid-cols-[auto_1fr_auto] justify-items-center gap-5 md:grid-cols-[auto_auto_1fr_auto] md:justify-items-normal xl:grid-cols-3 items-center">
+    <div
+      className="container__header border-b-3 py-3 px-5 grid grid-cols-[auto_1fr_auto] justify-items-center gap-5 md:grid-cols-[auto_auto_1fr_auto] md:justify-items-normal xl:grid-cols-3 items-center"
+      style={{ height: 'var(--header-h)' }}
+    >
       <button onClick={toggleSideBar} className="xl:hidden cursor-pointer">
-        <MenuIcon className=" w-10 h-10" />
+        <MenuIcon className="w-10 h-10" />
       </button>
 
       <div className="container__left">
@@ -34,7 +37,7 @@ export const Header = ({}: Props) => {
       </div>
 
       <div
-        className={`side__bar ${showSideBar ? '' : '-translate-x-full'} bg-white xl:-translate-x-full absolute top-20 left-0 h-[calc(100vh-80px)] w-full max-w-68 z-10 duration-700 border-r border-gray-200 pl-3`}
+        className={`side__bar ${showSideBar ? '' : '-translate-x-full'} xl:-translate-x-full absolute top-20 left-0 h-[calc(100vh-80px)] w-full max-w-68 z-10 duration-700 border-r border-gray-200 rounded-2xl`}
       >
         <LeftBar />
       </div>

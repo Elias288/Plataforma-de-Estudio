@@ -1,51 +1,37 @@
-import CardStyle from '@/components/styles/card.style';
-import Footer from '@/layouts/Footer';
+import CardStyled from '@/components/styles/Card.style';
+import FormStyled from '@/components/styles/Form.style';
+import { FormLabel, FormTextArea } from '@/components/styles/FormLabel.style';
 import { useParams } from 'react-router-dom';
 
 type Props = {};
 const TareaPage = ({}: Props) => {
   let params = useParams();
   return (
-    <div className="flex flex-col justify-between h-screen">
+    <div
+      className="flex flex-col justify-between mb-5"
+      style={{ minHeight: 'var(--scroll-min-h)' }}
+    >
       <div>
-        <CardStyle className={'mx-auto max-w-125 w-full mb-5'}>{params.tareaId}</CardStyle>
+        <CardStyled className={'mx-auto max-w-125 w-full mb-5'}>{params.tareaId}</CardStyled>
 
-        <CardStyle className={'mx-auto max-w-125 w-full mb-5'}>
-          <form className="flex flex-col gap-10">
-            <h3 className="text-xl text-gray-600">Entrega</h3>
-            <label className="flex flex-col">
-              <span className="text-gray-800">Descripción</span>
-              <input
-                type="text"
-                name="Descripción"
-                id="description"
-                className="border-0 border-b-2 border-b-gray-200 focus:outline-none"
-              />
-            </label>
-            <label className="flex flex-col">
-              <span className="text-gray-800">URL</span>
-              <input
-                type="url"
-                name="Url"
-                id="url"
-                className="border-0 border-b-2 border-b-gray-200 focus:outline-none"
-              />
-            </label>
+        <FormStyled containerClassName="rounded-2xl mb-5">
+          <h3 className="text-xl text-gray-600">Entrega</h3>
 
-            <div className="flex justify-end text-sky-600 ">
-              <button className="bg-sky-600 rounded-sm text-white px-3 py-1 cursor-pointer">
-                Entregar
-              </button>
-            </div>
-          </form>
-        </CardStyle>
+          <FormTextArea inputId="description" inputName="description" labelText="Descripción" />
 
-        <CardStyle className={'mx-auto max-w-125 w-full mb-5'}>
+          <FormLabel inputId="url" inputName="url" inputType="url" labelText="URL" />
+
+          <div className="flex justify-end text-sky-600 ">
+            <button className="bg-sky-600 rounded-sm text-white px-3 py-1 cursor-pointer">
+              Entregar
+            </button>
+          </div>
+        </FormStyled>
+
+        <CardStyled className={'mx-auto max-w-125 w-full mb-5'}>
           <h3>Mis Entregas</h3>
-        </CardStyle>
+        </CardStyled>
       </div>
-
-      <Footer />
     </div>
   );
 };
