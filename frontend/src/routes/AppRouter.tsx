@@ -9,6 +9,7 @@ import CursosPage from '@/pages/Cursos/Cursos.page';
 import InfoCurso from '@/pages/Cursos/InfoCurso.page';
 import TareaPage from '@/pages/Tareas/Tarea.page';
 import BarsLayout from '@/layouts/BarsLayout';
+import AgregarTarea from '@/pages/Tareas/AgregarTarea.page';
 
 const AppRouter = () => {
   return (
@@ -21,6 +22,7 @@ const AppRouter = () => {
               <Route index element={<CursosPage option="listar" />} />
               <Route path=":cursoId">
                 <Route index element={<InfoCurso />} />
+                <Route path="agregarTarea" element={<AgregarTarea />} />
               </Route>
             </Route>
           </Route>

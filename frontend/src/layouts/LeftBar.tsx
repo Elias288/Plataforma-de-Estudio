@@ -5,7 +5,7 @@ const LeftBar = () => {
   return (
     <nav className="left__bar h-full">
       <CardStyled className="h-full md:pl-5">
-        <div className="cursos">
+        <div className="cursos border-b border-gray-300 pb-5 mb-5">
           <h2 className="text-2xl text-gray-500">Cursos</h2>
 
           <ul className="list-disc list-inside">
@@ -40,9 +40,16 @@ const LeftBar = () => {
           </ul>
         </div>
 
-        <hr className="border-gray-300 my-5" />
+        <div className="usuarios border-b border-gray-300 pb-5 mb-5">
+          <h2 className="text-2xl text-gray-500">Tareas</h2>
+          <ul className="list-disc list-inside">
+            <li>
+              <LinkStyled to="/cursos/curso1/agregarTarea">Agregar Tarea</LinkStyled>
+            </li>
+          </ul>
+        </div>
 
-        <div className="usuarios">
+        <div className="usuarios border-b border-gray-300 pb-5 mb-5">
           <h2 className="text-2xl text-gray-500">Usuarios</h2>
 
           <ul className="list-disc list-inside">
