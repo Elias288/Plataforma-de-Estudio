@@ -47,6 +47,21 @@ Authorization: Bearer {{token}}
 
 ###
 
+### Add Student to Course ###
+
+PUT http://localhost:3000/courses/{{courseId}}/addStudents
+Authorization: Bearer {{token}}
+content-type: application/json
+
+{
+  "students": [
+    "b537aa9e-eb1a-491f-a37d-01c8811ab224"
+  ]
+}
+
+
+###
+
 ################ TASK ################
 
 ### Add Task of Course ###

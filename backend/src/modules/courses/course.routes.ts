@@ -11,6 +11,22 @@ const router = Router();
 
 router.get('/', authenticate, CourseController.list);
 
+router.put(
+  '/:id/addStudents',
+  authenticate,
+  authorizeRole([Role.ADMIN, Role.PROFESOR]),
+  validateParams(courseIdSchema),
+  CourseController.addStudent,
+);
+
+router.put(
+  '/:id/removeStudents',
+  authenticate,
+  authorizeRole([Role.ADMIN, Role.PROFESOR]),
+  validateParams(courseIdSchema),
+  CourseController.removeStudents,
+);
+
 router.get(
   '/:id',
   authenticate,

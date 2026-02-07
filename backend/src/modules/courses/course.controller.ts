@@ -1,5 +1,5 @@
 import { AppError } from '@/errors/app.error';
-import { createCourseSchema } from './course.dto';
+import { createCourseSchema, addStudentSchema } from './course.dto';
 import { CourseService } from './course.service';
 import { Request, Response } from 'express';
 
@@ -9,6 +9,44 @@ export class CourseController {
     const data = createCourseSchema.parse(req.body);
     const courses = await CourseService.create(data);
     res.status(201).json(courses);
+  }
+
+  /* AGREGAR ALUMNOS A CURSO */
+  static async addStudent(req: Request, res: Response) {
+    const { id } = req.params;
+    const data = addStudentSchema.parse(req.body);
+    const user = req.user!;
+
+    if (Array.isArray(id))
+      return new AppError('Error con el parámetro ingresado', 400);
+
+    const course = await CourseService.addAlumnoToCourse(
+      id,
+      data,
+      user.id,
+      user.role,
+    );
+
+    res.json(course);
+  }
+
+  /* QUITAR ALUMNOS DE CURSO */
+  static async removeStudents(req: Request, res: Response) {
+    const { id } = req.params;
+    const data = addStudentSchema.parse(req.body);
+    const user = req.user!;
+
+    if (Array.isArray(id))
+      return new AppError('Error con el parámetro ingresado', 400);
+
+    const course = await CourseService.removeAlumnoOfCourse(
+      id,
+      data,
+      user.id,
+      user.role,
+    );
+
+    res.json(course);
   }
 
   /* LISTAR CURSOS */
