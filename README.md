@@ -36,6 +36,18 @@ Antes de comenzar es necesario contar con:
 
 - `podman` instalado
 - Configurar el archivo `env`; para esto se dejó el archivo [.env.template](./backend/.env.template)
+  - Tener en cuenta las credenciales de la conexión a la bd 
+    ```env 
+    postgresql://<USUARIO>:<CONTRASEÑA>@localhost<PORT>/institute`)
+    ```
+  - Para la variable `JWT_SECRET` se recomienda usar el resultado del comando 
+    ```sh
+    openssl rand -base64 64
+    ```
+- Inicializar servicio de `prisma` 
+  ```sh
+  pnpm prisma migrate dev --name init
+  ```
 
 ### Ambiente de desarrollo
 
