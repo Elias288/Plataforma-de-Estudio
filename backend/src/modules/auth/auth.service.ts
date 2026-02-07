@@ -3,6 +3,7 @@ import { prisma } from '@/config/db';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { env } from '@/config/env';
+import { AppError } from '@/errors/app.error';
 
 export async function registerUser(
   email: string,
@@ -25,10 +26,10 @@ export async function registerUser(
 
 export async function loginUser(email: string, password: string) {
   const user = await prisma.user.findUnique({ where: { email } });
-  if (!user) throw new Error('Credenciales invalidas.');
+  if (!user) throw new AppError('Credenciales invalidas.1', 401);
 
   const valid = await bcrypt.compare(password, user.password);
-  if (!valid) throw new Error('Credenciales invalidas.');
+  if (!valid) throw new AppError('Credenciales invalidas.2', 401);
 
   const token = jwt.sign({ userId: user.id, role: user.role }, env.JWT_SECRET, {
     expiresIn: '1d',

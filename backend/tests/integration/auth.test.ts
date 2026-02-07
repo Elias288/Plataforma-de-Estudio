@@ -1,6 +1,7 @@
 import request from 'supertest';
 import { app } from '@/app';
 import { describe, it, expect } from 'vitest';
+import { createUser } from '../helpers/users';
 
 describe.skip('Auth - Registro', () => {
   it('Debería registra un usuario', async () => {
@@ -29,5 +30,17 @@ describe.skip('Auth - Registro', () => {
     });
 
     expect(res.status).toBe(400);
+  });
+});
+
+describe('Login', () => {
+  it('Inicio de sesión de admin', async () => {
+    const admin = await createUser('ADMIN', 'admin@test.com');
+
+    const res = await request(app)
+      .post(`/auth/login`)
+      .send({ email: admin.email, password: 'hashed' });
+
+    expect(res.status).toBe(200);
   });
 });
