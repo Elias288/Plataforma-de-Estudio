@@ -1,12 +1,13 @@
 import { Role } from '@prisma/client';
 import { prisma } from '@/config/db';
 import { AppError } from '@/errors/app.error';
+import { CreateSubmissionDto, SubmitGradeDto } from './submission.dto';
 
 export class SubmissionService {
   static async submit(
     taskId: string,
     userId: string,
-    data: { description: string; repoUrl: string },
+    data: CreateSubmissionDto,
   ) {
     const task = await prisma.task.findUnique({
       where: { id: taskId },
@@ -69,8 +70,7 @@ export class SubmissionService {
     submissionId: string,
     userId: string,
     role: Role,
-    grade: number,
-    feedback?: string,
+    data: SubmitGradeDto,
   ) {
     const submission = await prisma.submission.findUnique({
       where: { id: submissionId },
@@ -94,8 +94,8 @@ export class SubmissionService {
     return prisma.submission.update({
       where: { id: submissionId },
       data: {
-        grade,
-        feedback,
+        grade: data.grade,
+        feedback: data.feedback,
       },
     });
   }

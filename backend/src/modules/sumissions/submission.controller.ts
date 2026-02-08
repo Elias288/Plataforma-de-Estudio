@@ -1,20 +1,18 @@
 import { Request, Response } from 'express';
 import { AppError } from '@/errors/app.error';
 import { SubmissionService } from './submission.service';
+import { createSubmissionSchema, submitGradeSchema } from './submission.dto';
 
 export class SubmissionController {
   static async submit(req: Request, res: Response) {
     const { taskId } = req.params;
     const user = req.user!;
+    const data = createSubmissionSchema.parse(req.body);
 
     if (Array.isArray(taskId))
       return new AppError('Error con el parámetro ingresado', 400);
 
-    const submission = await SubmissionService.submit(
-      taskId,
-      user.id,
-      req.body,
-    );
+    const submission = await SubmissionService.submit(taskId, user.id, data);
 
     res.status(201).json(submission);
   }
@@ -38,6 +36,7 @@ export class SubmissionController {
   static async grade(req: Request, res: Response) {
     const { submissionId } = req.params;
     const user = req.user!;
+    const data = submitGradeSchema.parse(req.body);
 
     if (Array.isArray(submissionId))
       return new AppError('Error con el parámetro ingresado', 400);
@@ -46,8 +45,7 @@ export class SubmissionController {
       submissionId,
       user.id,
       user.role,
-      req.body.grade,
-      req.body.feedback,
+      data,
     );
 
     res.json(submission);
