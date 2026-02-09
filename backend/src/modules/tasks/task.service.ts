@@ -4,12 +4,20 @@ import { prisma } from '@/config/db';
 import { AppError } from '@/errors/app.error';
 
 export class TaskService {
-  static async create(courseId: string, data: CreateTaskDto) {
+  static async create(
+    courseId: string,
+    data: CreateTaskDto,
+    userId: string,
+    role: Role,
+  ) {
     const course = await prisma.course.findUnique({
       where: { id: courseId },
     });
 
     if (!course) throw new AppError('Curso no encontrado', 404);
+
+    if (role !== Role.ADMIN && course.professorId !== userId)
+      throw new AppError('Prohibido', 403);
 
     return prisma.task.create({
       data: {
