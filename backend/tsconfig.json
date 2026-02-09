@@ -45,7 +45,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "@tests": ["./tests/*"],
-      "@prisma": ["./prisma/*"]
+      "@prisma-local": ["./prisma/*"]
     }
   }
 }

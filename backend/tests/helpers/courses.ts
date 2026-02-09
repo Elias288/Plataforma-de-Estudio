@@ -1,13 +1,16 @@
-import { prisma } from '@/config/db';
+import { PrismaClient, Prisma } from '@prisma/client';
+import { DefaultArgs } from '@prisma/client/runtime/library';
 
 type CreateCourseInput = {
   name: string;
   description?: string;
   professorId: string;
   studentsIds?: string[];
+  prisma: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>;
 };
 
 export async function createCourse({
+  prisma,
   name,
   description = 'Descripción de prueba válida',
   professorId,

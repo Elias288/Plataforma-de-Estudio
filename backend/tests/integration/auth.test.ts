@@ -2,6 +2,9 @@ import request from 'supertest';
 import { app } from '@/app';
 import { describe, it, expect } from 'vitest';
 import { createUser } from '../helpers/users';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 describe.skip('Auth - Registro', () => {
   it('Debería registra un usuario', async () => {
@@ -35,7 +38,7 @@ describe.skip('Auth - Registro', () => {
 
 describe('Login', () => {
   it('Inicio de sesión de admin', async () => {
-    const admin = await createUser('ADMIN', 'admin@test.com');
+    const admin = await createUser(prisma, 'ADMIN', 'admin@test.com');
 
     const res = await request(app)
       .post(`/auth/login`)

@@ -1,10 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 generator client {
-  provider = "prisma-client-js"
+  provider   = "prisma-client-js"
 }
 
 datasource db {
@@ -12,61 +7,49 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  ADMIN
-  PROFESOR
-  ALUMNO
-}
-
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  password  String
-  role      Role
-  createdAt DateTime @default(now())
-
+  id             String          @id @default(uuid())
+  email          String          @unique
+  password       String
+  role           Role
+  createdAt      DateTime        @default(now())
   taughtCourses  Course[]        @relation("ProfessorCourses")
-  courses        Course[]        @relation("StudentCourses")
   courseStudents CourseStudent[]
   submissions    Submission[]
+  courses        Course[]        @relation("StudentCourses")
 }
 
 model Course {
-  id          String   @id @default(uuid())
-  name        String   @unique
-  description String
-  createdAt   DateTime @default(now())
-
-  professorId String
-  professor   User   @relation("ProfessorCourses", fields: [professorId], references: [id])
-  students    User[] @relation("StudentCourses")
-
-  tasks          Task[]
+  id             String          @id @default(uuid())
+  name           String          @unique
+  description    String
+  createdAt      DateTime        @default(now())
+  professorId    String
+  professor      User            @relation("ProfessorCourses", fields: [professorId], references: [id])
   courseStudents CourseStudent[]
+  tasks          Task[]
+  students       User[]          @relation("StudentCourses")
 }
 
 model CourseStudent {
   id        String @id @default(uuid())
   courseId  String
   studentId String
-
-  course  Course @relation(fields: [courseId], references: [id])
-  student User   @relation(fields: [studentId], references: [id])
+  course    Course @relation(fields: [courseId], references: [id])
+  student   User   @relation(fields: [studentId], references: [id])
 
   @@unique([courseId, studentId])
 }
 
 model Task {
-  id          String    @id @default(uuid())
+  id          String       @id @default(uuid())
   title       String
   description String
   dueDate     DateTime?
-  createdAt   DateTime  @default(now())
-
-  courseId String
-  course   Course @relation(fields: [courseId], references: [id])
-
+  createdAt   DateTime     @default(now())
+  courseId    String
   submissions Submission[]
+  course      Course       @relation(fields: [courseId], references: [id])
 }
 
 model Submission {
@@ -76,12 +59,16 @@ model Submission {
   grade       Int?
   createdAt   DateTime @default(now())
   feedback    String?
-
-  taskId    String
-  studentId String
-
-  task    Task @relation(fields: [taskId], references: [id])
-  student User @relation(fields: [studentId], references: [id])
+  taskId      String
+  studentId   String
+  student     User     @relation(fields: [studentId], references: [id])
+  task        Task     @relation(fields: [taskId], references: [id])
 
   @@unique([taskId, studentId])
+}
+
+enum Role {
+  ADMIN
+  PROFESOR
+  ALUMNO
 }

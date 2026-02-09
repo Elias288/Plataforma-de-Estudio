@@ -3,8 +3,14 @@ import { config } from 'dotenv';
 config({ path: '.env.test' });
 
 beforeEach(async () => {
-  await prisma.submission.deleteMany();
-  await prisma.task.deleteMany();
-  await prisma.course.deleteMany();
-  await prisma.user.deleteMany();
+  await prisma.$transaction([
+    prisma.submission.deleteMany(),
+    prisma.task.deleteMany(),
+    prisma.course.deleteMany(),
+    prisma.user.deleteMany(),
+  ]);
+});
+
+afterAll(async () => {
+  await prisma.$disconnect();
 });
