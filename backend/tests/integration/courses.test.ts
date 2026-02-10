@@ -1,6 +1,7 @@
 import { app } from '@/app';
 import { createUser } from '../helpers/users';
 import { createCourse } from '../helpers/courses';
+import { loginUser } from '../helpers/auth';
 import request from 'supertest';
 import { describe, it, expect } from 'vitest';
 import { PrismaClient } from '@prisma/client';
@@ -24,13 +25,11 @@ describe('Cursos - roles & propiedad', () => {
         professorId: profesor.id,
       });
 
-      const token = await request(app)
-        .post(`/auth/login`)
-        .send({ email: admin.email, password: 'hashed' });
+      const token = await loginUser(admin.email, 'hashed');
 
       const res = await request(app)
         .get('/courses')
-        .set('Authorization', `Bearer ${token.body.token}`);
+        .set('Authorization', `Bearer ${token}`);
 
       expect(res.status).toBe(200);
       expect(res.body.length).greaterThanOrEqual(2);
@@ -148,6 +147,7 @@ describe('Cursos - roles & propiedad', () => {
         .send({ students: [`${alumno.id}`] });
 
       expect(res.status).toBe(200);
+      expect(res.body.students).toHaveLength(1);
     });
 
     it('Profesor puede agregar alumno a sus cursos', async () => {
@@ -165,16 +165,15 @@ describe('Cursos - roles & propiedad', () => {
         professorId: profesor.id,
       });
 
-      const token = await request(app)
-        .post(`/auth/login`)
-        .send({ email: profesor.email, password: 'hashed' });
+      const token = await loginUser(profesor.email, 'hashed');
 
       const res = await request(app)
         .put(`/courses/${course.id}/addStudents`)
-        .set('Authorization', `Bearer ${token.body.token}`)
+        .set('Authorization', `Bearer ${token}`)
         .send({ students: [`${alumno.id}`] });
 
       expect(res.status).toBe(200);
+      expect(res.body.students).toHaveLength(1);
     });
 
     it('Profesor no puede agregar alumno a otros cursos', async () => {
@@ -196,7 +195,6 @@ describe('Cursos - roles & propiedad', () => {
         .put(`/courses/${course.id}/addStudents`)
         .set('Authorization', `Bearer ${profesor2Token.body.token}`)
         .send({ students: [`${alumno.id}`] });
-      console.log(res.body);
 
       expect(res.status).toBe(403);
     });
@@ -211,17 +209,14 @@ describe('Cursos - roles & propiedad', () => {
         professorId: profesor.id,
       });
 
-      const token = await request(app)
-        .post(`/auth/login`)
-        .send({ email: alumno.email, password: 'hashed' });
+      const token = await loginUser(alumno.email, 'hashed');
 
       const res = await request(app)
         .put(`/courses/${course.id}/addStudents`)
-        .set('Authorization', `Bearer ${token.body.token}`)
+        .set('Authorization', `Bearer ${token}`)
         .send({ students: [`${alumno.id}`] });
 
       expect(res.status).toBe(403);
-      // expect(res.body.length).toBe(2);
     });
 
     /* Quitar alumnos de curso: solo admins o profesores */
@@ -262,13 +257,11 @@ describe('Cursos - roles & propiedad', () => {
         studentsIds: [alumno1.id, alumno2.id],
       });
 
-      const token = await request(app)
-        .post(`/auth/login`)
-        .send({ email: profesor.email, password: 'hashed' });
+      const token = await loginUser(profesor.email, 'hashed');
 
       const res = await request(app)
         .put(`/courses/${course.id}/removeStudents`)
-        .set('Authorization', `Bearer ${token.body.token}`)
+        .set('Authorization', `Bearer ${token}`)
         .send({ students: [`${alumno1.id}`] });
 
       expect(res.status).toBe(200);
@@ -287,13 +280,11 @@ describe('Cursos - roles & propiedad', () => {
         studentsIds: [alumno1.id, alumno2.id],
       });
 
-      const token = await request(app)
-        .post(`/auth/login`)
-        .send({ email: profesor2.email, password: 'hashed' });
+      const token = await loginUser(profesor2.email, 'hashed');
 
       const res = await request(app)
         .put(`/courses/${course.id}/removeStudents`)
-        .set('Authorization', `Bearer ${token.body.token}`)
+        .set('Authorization', `Bearer ${token}`)
         .send({ students: [`${alumno1.id}`] });
 
       expect(res.status).toBe(403);
@@ -311,13 +302,11 @@ describe('Cursos - roles & propiedad', () => {
         studentsIds: [alumno1.id, alumno2.id],
       });
 
-      const token = await request(app)
-        .post(`/auth/login`)
-        .send({ email: alumno2.email, password: 'hashed' });
+      const token = await loginUser(alumno2.email, 'hashed');
 
       const res = await request(app)
         .put(`/courses/${course.id}/removeStudents`)
-        .set('Authorization', `Bearer ${token.body.token}`)
+        .set('Authorization', `Bearer ${token}`)
         .send({ students: [`${alumno1.id}`] });
 
       expect(res.status).toBe(403);
