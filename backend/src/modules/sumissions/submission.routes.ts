@@ -15,12 +15,7 @@ router.post(
   SubmissionController.submit,
 );
 
-router.get(
-  '/',
-  authenticate,
-  authorizeRole([Role.PROFESOR]),
-  SubmissionController.list,
-);
+router.get('/', authenticate, SubmissionController.list);
 
 router.patch(
   '/:submissionId/grade',

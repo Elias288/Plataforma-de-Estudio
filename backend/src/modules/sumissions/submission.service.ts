@@ -13,20 +13,16 @@ export class SubmissionService {
       where: { id: taskId },
       include: {
         course: {
-          include: { students: { select: { id: true } } },
+          include: {
+            students: { select: { id: true } },
+          },
         },
       },
     });
-
-    if (!task) {
-      throw new AppError('Tarea no encontrada', 404);
-    }
+    if (!task) throw new AppError('Tarea no encontrada', 404);
 
     const isStudent = task.course.students.some((s) => s.id === userId);
-
-    if (!isStudent) {
-      throw new AppError('Alumno no inscrito al curso', 403);
-    }
+    if (!isStudent) throw new AppError('Alumno no inscrito al curso', 403);
 
     return prisma.submission.create({
       data: {
@@ -42,34 +38,44 @@ export class SubmissionService {
       where: { id: taskId },
       include: {
         course: true,
+        submissions: true,
       },
     });
 
-    if (!task) {
-      throw new AppError('Tarea no encontrada', 404);
-    }
+    if (!task) throw new AppError('Tarea no encontrada', 404);
 
-    if (task.course.professorId !== userId) {
-      throw new AppError('Prohibido', 403);
-    }
-
-    return prisma.submission.findMany({
-      where: { taskId },
-      include: {
-        student: {
-          select: {
-            id: true,
-            email: true,
+    if (task.submissions.some((s) => s.studentId === userId))
+      return prisma.submission.findMany({
+        where: { taskId, studentId: userId },
+        include: {
+          student: {
+            select: {
+              id: true,
+              email: true,
+            },
           },
         },
-      },
-    });
+      });
+
+    if (role === Role.ADMIN || task.course.professorId === userId)
+      return prisma.submission.findMany({
+        where: { taskId },
+        include: {
+          student: {
+            select: {
+              id: true,
+              email: true,
+            },
+          },
+        },
+      });
+
+    throw new AppError('Prohibido', 403);
   }
 
   static async grade(
     submissionId: string,
     userId: string,
-    role: Role,
     data: SubmitGradeDto,
   ) {
     const submission = await prisma.submission.findUnique({
@@ -83,13 +89,9 @@ export class SubmissionService {
       },
     });
 
-    if (!submission) {
-      throw new AppError('Entrega no encontrada', 404);
-    }
-
-    if (submission.task.course.professorId !== userId) {
+    if (!submission) throw new AppError('Entrega no encontrada', 404);
+    if (submission.task.course.professorId !== userId)
       throw new AppError('Prohibido', 403);
-    }
 
     return prisma.submission.update({
       where: { id: submissionId },

@@ -44,7 +44,6 @@ export class SubmissionController {
     const submission = await SubmissionService.grade(
       submissionId,
       user.id,
-      user.role,
       data,
     );
 
