@@ -24,16 +24,17 @@ export async function registerUser(
   });
 }
 
-export async function loginUser(email: string, password: string) {
+export async function loginUser(email: string, pass: string) {
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user) throw new AppError('Credenciales invalidas.1', 401);
 
-  const valid = await bcrypt.compare(password, user.password);
+  const valid = await bcrypt.compare(pass, user.password);
   if (!valid) throw new AppError('Credenciales invalidas.2', 401);
 
   const token = jwt.sign({ userId: user.id, role: user.role }, env.JWT_SECRET, {
     expiresIn: '1d',
   });
+  const { password, ...publicUser } = user;
 
-  return { token };
+  return { token, user: publicUser };
 }

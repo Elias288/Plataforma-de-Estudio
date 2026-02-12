@@ -45,5 +45,6 @@ describe('Login', () => {
       .send({ email: admin.email, password: 'hashed' });
 
     expect(res.status).toBe(200);
+    expect(res.body.user.email).equal('admin@test.com');
   });
 });
