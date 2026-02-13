@@ -10,6 +10,7 @@ export async function createUser(
   return prisma.user.create({
     data: {
       email,
+      name: email.split('@')[0],
       password: await bcrypt.hash('hashed', 10),
       role,
     },

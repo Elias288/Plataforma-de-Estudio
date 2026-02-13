@@ -1,4 +1,4 @@
-import { PrismaClient, Role } from '@prisma/client';
+import { Gender, PrismaClient, Role } from '@prisma/client';
 import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
@@ -8,12 +8,13 @@ async function main() {
 
   const password = await bcrypt.hash('123456', 10);
 
-  const admin = await prisma.user.upsert({
+  await prisma.user.upsert({
     where: { email: 'admin@instituto.com' },
     update: {},
     create: {
       email: 'admin@instituto.com',
       password,
+      name: 'admin',
       role: Role.ADMIN,
     },
   });
@@ -24,6 +25,7 @@ async function main() {
     create: {
       email: 'profesor@instituto.com',
       password,
+      name: 'profesor',
       role: Role.PROFESOR,
     },
   });
@@ -33,6 +35,7 @@ async function main() {
     update: {},
     create: {
       email: 'alumno@instituto.com',
+      name: 'alumno',
       password,
       role: Role.ALUMNO,
     },

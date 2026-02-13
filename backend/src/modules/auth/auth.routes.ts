@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { login, register } from './auth.controller';
 import { authorizeRole } from '@/middlewares/role.middleware';
 import { Role } from '@prisma/client';
 import { authenticate } from '@/middlewares/auth.middleware';
+import { AuthController } from './auth.controller';
 
 export const authRouter = Router();
 
@@ -10,6 +10,15 @@ authRouter.post(
   '/register',
   authenticate,
   authorizeRole([Role.ADMIN]),
-  register,
+  AuthController.register,
 );
-authRouter.post('/login', login);
+
+authRouter.post('/login', AuthController.login);
+
+authRouter.get('/userInfo', authenticate, AuthController.userInfo);
+
+authRouter.patch(
+  '/update/:userId',
+  authenticate,
+  AuthController.updateUserInfo,
+);

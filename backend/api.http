@@ -11,6 +11,7 @@ Content-Type: application/json
 ###
 
 ### LOGIN ###
+# @name login
 POST http://localhost:3000/auth/login
 Content-Type: application/json
 
@@ -20,3 +21,13 @@ Content-Type: application/json
 }
 
 ###
+
+### TOKEN ID ###
+@token = {{login.response.body.token}}
+
+###
+
+### OBTENER INFORMACIÓN DE USUARIO ###
+
+GET http://localhost:3000/auth/userInfo
+Authorization: Bearer {{token}}
