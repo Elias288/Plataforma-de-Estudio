@@ -41,6 +41,7 @@ const PerfilButton = ({}: Props) => {
           <ul className="list-none">
             <li>
               <Link
+                onClick={() => setOpen(false)}
                 to="/perfil"
                 className="cursor-pointer hover:text-sky-600 flex flex-row flex-nowrap gap-2"
               >

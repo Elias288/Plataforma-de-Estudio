@@ -1,11 +1,24 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
 export type Role = 'ADMIN' | 'PROFESOR' | 'ALUMNO';
+type Gender = 'MALE' | 'FEMALE';
 
-interface User {
+interface Course {
+  id: string;
+  name: string;
+  description: string;
+  createdAt: Date;
+  professorId: string;
+}
+export interface User {
   id: string;
   email: string;
   role: Role;
+  name?: string;
+  age?: number;
+  gender?: Gender;
+  createdAt?: Date;
+  courses?: Course[];
 }
 
 interface AuthContextType {

@@ -11,6 +11,7 @@ import TareaPage from '@/pages/Tareas/Tarea.page';
 import BarsLayout from '@/layouts/BarsLayout';
 import AgregarTarea from '@/pages/Tareas/AgregarTarea.page';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
+import PerfilPage from '@/pages/Perfil/Perfil.page';
 
 const AppRouter = () => {
   return (
@@ -31,6 +32,7 @@ const AppRouter = () => {
             </Route>
 
             <Route path="/cursos/:cursoId/:tareaId" element={<TareaPage />} />
+            <Route path="/perfil" element={<PerfilPage />} />
           </Route>
         </Route>
 
