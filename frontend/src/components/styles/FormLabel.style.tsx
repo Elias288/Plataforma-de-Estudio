@@ -3,13 +3,21 @@ type Props = {
   inputName: string;
   inputId: string;
   inputType?: React.HTMLInputTypeAttribute;
+  onChange?: React.ChangeEventHandler<HTMLInputElement, HTMLInputElement> | undefined;
 };
 
-export const FormLabel = ({ inputType = 'text', labelText, inputName, inputId }: Props) => {
+export const FormLabel = ({
+  inputType = 'text',
+  labelText,
+  inputName,
+  inputId,
+  onChange,
+}: Props) => {
   return (
     <label className="flex flex-col">
       <span className="text-gray-800">{labelText}</span>
       <input
+        onChange={onChange}
         type={inputType}
         name={inputName}
         id={inputId}

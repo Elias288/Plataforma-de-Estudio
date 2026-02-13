@@ -1,43 +1,85 @@
-import { useNavigate } from 'react-router-dom';
+import api from '@/api/client';
+import { FormLabel } from '@/components/styles/FormLabel.style';
+import { useAuth } from '@/context/AuthContext';
+import { useEffect, useState, type ChangeEvent } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Login = () => {
   let navigate = useNavigate();
+  const location = useLocation();
+  const { login, isAuthenticated } = useAuth();
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const from = (location.state as any)?.from?.pathname || '/';
+
+  useEffect(() => {
+    if (isAuthenticated) navigate(from, { replace: true });
+  }, [isAuthenticated]);
+
+  const handleSubmit = async (e: ChangeEvent) => {
+    e.preventDefault();
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      const res = await api.post('/auth/login', { email, password });
+      const { user, token } = res.data;
+
+      login(user, token);
+
+      navigate(from, { replace: true });
+    } catch (err: any) {
+      if (err.response?.status === 401) setError('Credenciales incorrectas');
+      else setError('Error del servidor');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <main className="bg-gray-100 min-h-screen">
       <section>
         <article className="lg:w-[50%] lg:absolute lg:top-[50%] lg:left-[50%] lg: right-auto lg:translate-y-[-50%]">
-          <form className="bg-white max-w-125 mx-auto rounded-sm shadow-sm pb-5 flex flex-col gap-10 mb-5">
+          <form
+            onSubmit={handleSubmit}
+            className="bg-white max-w-125 mx-auto rounded-sm shadow-sm pb-5 flex flex-col gap-10 mb-5"
+          >
             <legend className="border-b-4 p-10">
               <h1 className="text-xl font-bold text-center">Plataforma de cursos</h1>
             </legend>
 
             <h2 className="text-2xl text-gray-500 px-10">Inicia sesión</h2>
 
-            <label className="flex flex-col px-10 ">
-              <span className="text-gray-800">Correo electrónico</span>
-              <input
-                type="email"
-                name="email"
-                className="border-0 border-b-2 border-b-gray-200 focus-visible:outline-0"
+            <div className="flex flex-col gap-10 px-10">
+              <FormLabel
+                inputId="email"
+                inputName="email"
+                labelText="Correo electrónico"
+                onChange={(e) => setEmail(e.target.value)}
               />
-            </label>
+              <FormLabel
+                inputId="password"
+                inputName="pass"
+                labelText="Contraseña"
+                inputType="password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
 
-            <label className="flex flex-col  px-10">
-              <span className="text-gray-800">Contraseña</span>
-              <input
-                type="password"
-                name="pass"
-                className="border-0 border-b-2 border-b-gray-200 focus-visible:outline-0"
-              />
-            </label>
+              {error && <p style={{ color: 'red' }}>{error}</p>}
+            </div>
 
             <label className="flex justify-end text-sky-600 px-10">
               <button
-                className="bg-white px-4 py-2 border rounded-sm shadow-md cursor-pointer"
-                onClick={() => navigate('/')}
+                className="bg-white px-4 py-2 border rounded-sm shadow-md cursor-pointer disabled:opacity-50 disabled:cursor-auto"
+                type="submit"
+                disabled={loading}
               >
-                Iniciar sesión
+                {loading ? 'Ingresando' : 'Iniciar sesión'}
               </button>
             </label>
           </form>

@@ -1,9 +1,8 @@
-import UserLogo from '@/assets/user.svg?react';
-import NavBar from './NavBar';
+import NavBar from '../NavBar';
 import MenuIcon from '@/assets/menu.svg?react';
 import { useState } from 'react';
 import LeftBar from '@/layouts/LeftBar';
-import { Link } from 'react-router-dom';
+import PerfilButton from './components/PerfilButton';
 
 type Props = {};
 export const Header = ({}: Props) => {
@@ -29,11 +28,7 @@ export const Header = ({}: Props) => {
       </div>
 
       <div className="container__right profile">
-        <span className="float-end">
-          <Link to={'/login'}>
-            <UserLogo />
-          </Link>
-        </span>
+        <PerfilButton />
       </div>
 
       <div

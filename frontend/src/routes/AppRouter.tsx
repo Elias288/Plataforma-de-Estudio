@@ -10,29 +10,35 @@ import InfoCurso from '@/pages/Cursos/InfoCurso.page';
 import TareaPage from '@/pages/Tareas/Tarea.page';
 import BarsLayout from '@/layouts/BarsLayout';
 import AgregarTarea from '@/pages/Tareas/AgregarTarea.page';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 const AppRouter = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<MainLayout />}>
-          <Route element={<BarsLayout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/cursos">
-              <Route index element={<CursosPage option="listar" />} />
-              <Route path=":cursoId">
-                <Route index element={<InfoCurso />} />
-                <Route path="agregarTarea" element={<AgregarTarea />} />
+        <Route element={<ProtectedRoute />}>
+          <Route element={<MainLayout />}>
+            <Route element={<BarsLayout />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/cursos">
+                <Route index element={<CursosPage option="listar" />} />
+
+                <Route path=":cursoId">
+                  <Route index element={<InfoCurso />} />
+                  <Route path="agregarTarea" element={<AgregarTarea />} />
+                </Route>
               </Route>
             </Route>
+
+            <Route path="/cursos/:cursoId/:tareaId" element={<TareaPage />} />
           </Route>
+        </Route>
 
-          {/* Solo para administradores y profesores */}
-          <Route path="/createUser" element={<CreateUser />} />
-          {/* Solo para administradores y profesores */}
-          <Route path="/crearCurso" element={<CursosPage option="crear" />} />
-
-          <Route path="/cursos/:cursoId/:tareaId" element={<TareaPage />} />
+        <Route element={<ProtectedRoute allowedRoles={['ADMIN', 'PROFESOR']} />}>
+          <Route element={<MainLayout />}>
+            <Route path="/createUser" element={<CreateUser />} />
+            <Route path="/crearCurso" element={<CursosPage option="crear" />} />
+          </Route>
         </Route>
 
         <Route path="/login" element={<Login />} />

@@ -3,6 +3,7 @@
 @theme {
     --header-h: 80px;
     --footer-h: 80px;
-    --main-h: calc(100vh - var(--footer-h));
+    --main-h: calc(100vh - var(--footer-h) - 65px);
+    --main-h-responsive: calc(100vh - var(--footer-h));
     --scroll-min-h: calc(100dvh - 40px - var(--footer-h) - var(--header-h))
 }
