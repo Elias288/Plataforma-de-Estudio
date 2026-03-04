@@ -47,12 +47,14 @@ Backend de la Plataforma de Estudio
 
 Antes de comenzar es necesario contar con:
 
+- `pnpm` o `npm` instalado
 - `podman` instalado
+
 - Configurar el archivo `env`; para esto se dejó el archivo [.env.template](.env.template)
   - Tener en cuenta las credenciales de la conexión a la bd
 
     ```env
-    postgresql://<USUARIO>:<CONTRASEÑA>@localhost<PORT>/institute`)
+    postgresql://postgres:<CONTRASEÑA>@localhost<PORT>/institute`)
     ```
 
   - Para la variable `JWT_SECRET` se recomienda usar el resultado del comando
@@ -61,23 +63,11 @@ Antes de comenzar es necesario contar con:
     openssl rand -base64 64
     ```
 
-- Inicializar servicio de `prisma`
-
-  ```sh
-  pnpm prisma migrate dev --name init
-  ```
-
 ### Ambiente de desarrollo
 
-Para ejecutar el backend de manera local y teniendo los [prerrequisitos](#prerrequisitos) configurados pasaremos a ejecutar el siguiente comando que iniciará la base de datos
+Para ejecutar el backend de manera local y teniendo los [prerrequisitos](#prerrequisitos) configurados pasaremos a ejecutar el siguiente comandos
 
-```sh
-# container-compose.yaml
-
-podman-compose up -d database
-```
-
-Instalar las dependencias
+Instalar dependencias del proyecto
 
 ```sh
 # Instalar dependencias
@@ -86,7 +76,20 @@ pnpm install
 npm install
 ```
 
-y cargar los datos de prueba
+Iniciar la base de datos
+
+```sh
+# container-compose.yaml
+podman-compose up -d db
+```
+
+Inicializar servicio de `prisma`
+
+```sh
+pnpm prisma migrate dev --name init
+```
+
+Cargar los datos de prueba
 
 ```sh
 pnpm run seed
