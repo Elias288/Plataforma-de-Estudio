@@ -12,6 +12,7 @@ import BarsLayout from '@/layouts/BarsLayout';
 import AgregarTarea from '@/pages/Tareas/AgregarTarea.page';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import PerfilPage from '@/pages/Perfil/Perfil.page';
+import UsuariosPage from '@/pages/Usuarios/Usuarios.page';
 
 const AppRouter = () => {
   return (
@@ -38,6 +39,9 @@ const AppRouter = () => {
 
         <Route element={<ProtectedRoute allowedRoles={['ADMIN', 'PROFESOR']} />}>
           <Route element={<MainLayout />}>
+            <Route element={<BarsLayout />}>
+              <Route path="/users" element={<UsuariosPage />} />
+            </Route>
             <Route path="/createUser" element={<CreateUser />} />
             <Route path="/crearCurso" element={<CursosPage option="crear" />} />
           </Route>
