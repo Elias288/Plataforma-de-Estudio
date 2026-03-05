@@ -3,7 +3,7 @@ import CardStyled from '@/components/styles/Card.style';
 import LinkStyled from '@/components/styles/Link.Style';
 import { useEffect, useState } from 'react';
 import api from '@/api/client';
-import { type Course, type Task } from '@/context/AuthContext';
+import { useAuth, type Course, type Task } from '@/context/AuthContext';
 import RequireRole from '@/components/RequireRole';
 
 type Props = {};
@@ -12,6 +12,7 @@ const InfoCurso = ({}: Props) => {
   const [loading, setLoading] = useState(true);
   const [course, setCourse] = useState<Course | null>(null);
   const [tareas, setTareas] = useState<Task[]>([]);
+  const { user } = useAuth();
   let params = useParams();
 
   useEffect(() => {
@@ -92,15 +93,12 @@ const InfoCurso = ({}: Props) => {
         {/* Vista de tareas para alumnos */}
         <RequireRole allowedRoles={['ALUMNO']}>
           <CardStyled>
-            <pre>{JSON.stringify(tareas, null, 4)}</pre>
-          </CardStyled>
-          <CardStyled>
             <h3 className="text-xl text-gray-600">Tareas por Hacer</h3>
 
             <ul className="list-disc list-inside">
               {tareas.length === 0 && <p className="text-gray-400">Sin Tareas</p>}
               {tareas
-                .filter((tarea) => tarea.dueDate === null)
+                .filter((tarea) => !tarea.submissions)
                 .map((t, key) => (
                   <li key={key}>
                     <LinkStyled to={encodeURIComponent(t.title)}>
@@ -118,7 +116,10 @@ const InfoCurso = ({}: Props) => {
             {tareas.length === 0 && <p className="text-gray-400">Sin Tareas</p>}
             <ul className="list-disc list-inside">
               {tareas
-                .filter((tarea) => tarea.dueDate !== null)
+                .filter(
+                  (tarea) =>
+                    tarea.submissions && tarea.submissions.find((s) => s.studentId === user?.id),
+                )
                 .map((t, key) => (
                   <li key={key}>
                     <LinkStyled to={encodeURIComponent(t.title)}>
