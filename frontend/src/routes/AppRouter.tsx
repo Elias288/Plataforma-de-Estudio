@@ -13,6 +13,7 @@ import AgregarTarea from '@/pages/Tareas/AgregarTarea.page';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import PerfilPage from '@/pages/Perfil/Perfil.page';
 import UsuariosPage from '@/pages/Usuarios/Usuarios.page';
+import CrearCurso from '@/pages/Cursos/components/CrearCurso';
 import UnauthorizedPage from '@/pages/Unauthorized.page';
 
 const AppRouter = () => {
@@ -23,8 +24,10 @@ const AppRouter = () => {
           <Route element={<MainLayout />}>
             <Route element={<BarsLayout />}>
               <Route path="/" element={<Home />} />
+
+              {/* CURSOS */}
               <Route path="/cursos">
-                <Route index element={<CursosPage option="listar" />} />
+                <Route index element={<CursosPage />} />
 
                 <Route path=":cursoId">
                   <Route index element={<InfoCurso />} />
@@ -32,8 +35,8 @@ const AppRouter = () => {
                 </Route>
               </Route>
             </Route>
-
             <Route path="/cursos/:cursoId/:tareaId" element={<TareaPage />} />
+
             <Route path="/perfil" element={<PerfilPage />} />
           </Route>
         </Route>
@@ -44,7 +47,7 @@ const AppRouter = () => {
               <Route path="/users" element={<UsuariosPage />} />
             </Route>
             <Route path="/createUser" element={<CreateUser />} />
-            <Route path="/crearCurso" element={<CursosPage option="crear" />} />
+            <Route path="/crearCurso" element={<CrearCurso />} />
           </Route>
         </Route>
 

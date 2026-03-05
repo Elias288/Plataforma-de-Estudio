@@ -1,47 +1,135 @@
 import { useParams } from 'react-router-dom';
 import CardStyled from '@/components/styles/Card.style';
 import LinkStyled from '@/components/styles/Link.Style';
+import { useEffect, useState } from 'react';
+import api from '@/api/client';
+import { type Course, type Task } from '@/context/AuthContext';
+import RequireRole from '@/components/RequireRole';
 
 type Props = {};
 const InfoCurso = ({}: Props) => {
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [course, setCourse] = useState<Course | null>(null);
+  const [tareas, setTareas] = useState<Task[]>([]);
   let params = useParams();
+
+  useEffect(() => {
+    const getCursoId = async (name: string) => {
+      const res = await api.get<Course[]>('/courses');
+      const cursos = res.data;
+      const cursoId = cursos.find((c) => c.name === name)?.id;
+
+      const infoCurso = await api.get<Course>(`/courses/${cursoId}`);
+      setCourse(infoCurso.data);
+
+      const tareasDeCurso = await api.get<Task[]>(`/courses/${cursoId}/tasks`);
+      setTareas(tareasDeCurso.data);
+    };
+
+    try {
+      if (params.cursoId) getCursoId(params.cursoId);
+    } catch (error: any) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  if (loading)
+    return (
+      <div className="cursos">
+        <article className="flex flex-col gap-y-4">
+          <CardStyled>
+            <p>Cargando...</p>
+          </CardStyled>
+        </article>
+      </div>
+    );
+
+  if (error)
+    return (
+      <div className="cursos">
+        <article className="flex flex-col gap-y-4">
+          <CardStyled>
+            <p>{error}</p>
+          </CardStyled>
+        </article>
+      </div>
+    );
+
   return (
     <div className="cursos">
       <article className="flex flex-col gap-y-4">
         <CardStyled>
-          <span>
-            id: <strong>{params.cursoId}</strong>
-          </span>
-          <h2 className="text-2xl text-gray-600">Titulo del curso</h2>
-          <p>*info del curso</p>
+          <h2 className="text-2xl text-gray-600">{course?.name}</h2>
+          <p>{course?.description}</p>
+
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent commodo mi vitae felis
-            finibus, tempus tincidunt massa sodales. Pellentesque habitant morbi tristique senectus
-            et netus et malesuada fames ac turpis egestas. Duis libero sem, fringilla vel elementum
-            non, imperdiet luctus nulla. Duis mattis lorem porta eros maximus, nec rhoncus mauris
-            blandit. Fusce sed arcu eu velit faucibus porta. Praesent pharetra tincidunt luctus.
-            Cras egestas lorem urna, at congue dui malesuada at.
+            <strong>Profesor:</strong> {course?.professor.email}
           </p>
         </CardStyled>
 
-        <CardStyled>
-          <h3 className="text-xl text-gray-600">Tareas por Hacer</h3>
+        {/* Vista de tareas para profesor y admin */}
+        <RequireRole allowedRoles={['ADMIN', 'PROFESOR']}>
+          <CardStyled>
+            <h3 className="text-xl text-gray-600">Tareas</h3>
 
-          <ul className="list-disc list-inside">
-            <li>
-              <LinkStyled to={'ejercicio1'}>Ejercicio 1 - 10/02/2026</LinkStyled>
-            </li>
-            <li>
-              <LinkStyled to={'ejercicio2'}>Ejercicio 2 - 02/03/2026</LinkStyled>
-            </li>
-          </ul>
-        </CardStyled>
+            <ul className="list-disc list-inside">
+              {tareas.length === 0 && <p className="text-gray-400">Sin Tareas</p>}
+              {tareas.map((t, key) => (
+                <li key={key}>
+                  <LinkStyled to={encodeURIComponent(t.title)}>
+                    {t.title}{' '}
+                    {t.dueDate !== null ? `- ${new Date(t.dueDate).toLocaleDateString()}` : ''}
+                  </LinkStyled>
+                </li>
+              ))}
+            </ul>
+          </CardStyled>
+        </RequireRole>
 
-        <CardStyled>
-          <h3 className="text-xl text-gray-600">Tareas Hechas</h3>
+        {/* Vista de tareas para alumnos */}
+        <RequireRole allowedRoles={['ALUMNO']}>
+          <CardStyled>
+            <pre>{JSON.stringify(tareas, null, 4)}</pre>
+          </CardStyled>
+          <CardStyled>
+            <h3 className="text-xl text-gray-600">Tareas por Hacer</h3>
 
-          <span>Sin tareas</span>
-        </CardStyled>
+            <ul className="list-disc list-inside">
+              {tareas.length === 0 && <p className="text-gray-400">Sin Tareas</p>}
+              {tareas
+                .filter((tarea) => tarea.dueDate === null)
+                .map((t, key) => (
+                  <li key={key}>
+                    <LinkStyled to={encodeURIComponent(t.title)}>
+                      {t.title}{' '}
+                      {t.dueDate !== null ? `- ${new Date(t.dueDate).toLocaleDateString()}` : ''}
+                    </LinkStyled>
+                  </li>
+                ))}
+            </ul>
+          </CardStyled>
+
+          <CardStyled>
+            <h3 className="text-xl text-gray-600">Tareas Hechas</h3>
+
+            {tareas.length === 0 && <p className="text-gray-400">Sin Tareas</p>}
+            <ul className="list-disc list-inside">
+              {tareas
+                .filter((tarea) => tarea.dueDate !== null)
+                .map((t, key) => (
+                  <li key={key}>
+                    <LinkStyled to={encodeURIComponent(t.title)}>
+                      {t.title}{' '}
+                      {t.dueDate !== null ? `- ${new Date(t.dueDate).toLocaleDateString()}` : ''}
+                    </LinkStyled>
+                  </li>
+                ))}
+            </ul>
+          </CardStyled>
+        </RequireRole>
       </article>
     </div>
   );

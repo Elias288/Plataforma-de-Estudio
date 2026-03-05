@@ -3,13 +3,17 @@ import { createContext, useContext, useEffect, useState } from 'react';
 export type Role = 'ADMIN' | 'PROFESOR' | 'ALUMNO';
 type Gender = 'MALE' | 'FEMALE';
 
-interface Course {
+export interface Course {
   id: string;
   name: string;
   description: string;
   createdAt: Date;
   professorId: string;
+  professor: { id: string; email: string };
+  students: string[];
+  tasks: Task[];
 }
+
 export interface User {
   id: string;
   email: string;
@@ -19,6 +23,27 @@ export interface User {
   gender?: Gender;
   createdAt?: Date;
   courses?: Course[];
+}
+
+export interface Task {
+  id: string;
+  title: string;
+  description: string;
+  dueDate: Date | null;
+  createdAt: Date;
+  courseId: string;
+  submissions: Submission[];
+}
+
+export interface Submission {
+  id: string;
+  repoUrl: string;
+  description: string;
+  grade?: number;
+  createdAt: Date;
+  feedback?: string;
+  taskId: string;
+  studentId: string;
 }
 
 interface AuthContextType {
