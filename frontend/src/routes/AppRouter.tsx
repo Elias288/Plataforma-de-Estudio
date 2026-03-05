@@ -13,6 +13,7 @@ import AgregarTarea from '@/pages/Tareas/AgregarTarea.page';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import PerfilPage from '@/pages/Perfil/Perfil.page';
 import UsuariosPage from '@/pages/Usuarios/Usuarios.page';
+import UnauthorizedPage from '@/pages/Unauthorized.page';
 
 const AppRouter = () => {
   return (
@@ -51,6 +52,9 @@ const AppRouter = () => {
         <Route path="/registration" element={<Registration />} />
 
         <Route element={<MainLayout />}>
+          <Route element={<BarsLayout />}>
+            <Route path="/unauthorized" element={<UnauthorizedPage />} />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
