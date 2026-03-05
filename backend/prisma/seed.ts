@@ -30,6 +30,17 @@ async function main() {
     },
   });
 
+  const profesor2 = await prisma.user.upsert({
+    where: { email: 'profesor2@instituto.com' },
+    update: {},
+    create: {
+      email: 'profesor2@instituto.com',
+      password,
+      name: 'profesor2',
+      role: Role.PROFESOR,
+    },
+  });
+
   const alumno = await prisma.user.upsert({
     where: { email: 'alumno@instituto.com' },
     update: {},
@@ -41,7 +52,18 @@ async function main() {
     },
   });
 
-  await prisma.course.upsert({
+  const alumno2 = await prisma.user.upsert({
+    where: { email: 'alumno2@instituto.com' },
+    update: {},
+    create: {
+      email: 'alumno2@instituto.com',
+      name: 'alumno2',
+      password,
+      role: Role.ALUMNO,
+    },
+  });
+
+  const curso = await prisma.course.upsert({
     where: { name: 'Backend I' },
     update: {},
     create: {
@@ -51,6 +73,40 @@ async function main() {
       students: {
         connect: [{ id: alumno.id }],
       },
+    },
+  });
+
+  const curso2 = await prisma.course.upsert({
+    where: { name: 'Backend II' },
+    update: {},
+    create: {
+      name: 'Backend II',
+      description: 'Curso de backend con Node.js',
+      professorId: profesor2.id,
+      students: {
+        connect: [{ id: alumno.id }],
+      },
+    },
+  });
+
+  await prisma.task.upsert({
+    where: { title: 'Tarea 1' },
+    update: {},
+    create: {
+      title: 'Tarea 1',
+      description: 'Descripción de la tarea 1',
+      courseId: curso.id,
+    },
+  });
+
+  await prisma.task.upsert({
+    where: { title: 'Tarea 2' },
+    update: {},
+    create: {
+      title: 'Tarea 2',
+      description: 'Descripción de la tarea 2',
+      courseId: curso.id,
+      dueDate: new Date(),
     },
   });
 
