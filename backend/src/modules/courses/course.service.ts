@@ -146,6 +146,12 @@ export class CourseService {
             email: true,
           },
         },
+        tasks: {
+          omit: {
+            id: true,
+            courseId: true,
+          },
+        },
       },
     });
 

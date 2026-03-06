@@ -17,7 +17,22 @@ export class SubmissionController {
     res.status(201).json(submission);
   }
 
-  static async list(req: Request, res: Response) {
+  static async listCourseSubmissions(req: Request, res: Response) {
+    const { id: courseId } = req.params;
+    const user = req.user!;
+
+    if (Array.isArray(courseId))
+      return new AppError('Error con el parámetro ingresado', 400);
+
+    const submissions = await SubmissionService.listByCourse(
+      user.id,
+      user.role,
+      courseId,
+    );
+    res.status(200).json(submissions);
+  }
+
+  static async listTaskSubmissions(req: Request, res: Response) {
     const { taskId } = req.params;
     const user = req.user!;
 

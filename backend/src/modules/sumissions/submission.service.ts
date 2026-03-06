@@ -33,6 +33,32 @@ export class SubmissionService {
     });
   }
 
+  static async listByCourse(userId: string, role: Role, courseId: string) {
+    const course = await prisma.course.findUnique({
+      where: { id: courseId },
+      include: {
+        tasks: {
+          include: {
+            submissions: {},
+          },
+        },
+      },
+    });
+    if (!course) throw new AppError('No se encontró el curso', 404);
+
+    if (role === Role.ALUMNO) {
+      return course.tasks.map((t) =>
+        t.submissions.find((s) => s.studentId === userId),
+      );
+    }
+
+    if (role === Role.ADMIN || course.professorId === userId) {
+      return course.tasks.flatMap((t) => t.submissions);
+    }
+
+    throw new AppError('Prohibido', 403);
+  }
+
   static async listByTask(taskId: string, userId: string, role: Role) {
     const task = await prisma.task.findUnique({
       where: { id: taskId },

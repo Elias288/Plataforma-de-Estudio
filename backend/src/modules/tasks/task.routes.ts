@@ -3,7 +3,7 @@ import { authenticate } from '@/middlewares/auth.middleware';
 import { validateParams } from '@/middlewares/params.middleware';
 import { TaskController } from './task.controller';
 import { courseIdSchema } from '@/modules/courses/course.dto';
-import submissionRoutes from '@/modules/sumissions/submission.routes';
+import taskSubmissionRoutes from '@/modules/sumissions/taskSubmission.routes';
 import { authorizeRole } from '@/middlewares/role.middleware';
 import { Role } from '@prisma/client';
 
@@ -19,6 +19,6 @@ router.post(
 
 router.get('/', authenticate, TaskController.list);
 
-router.use('/:taskId/submissions', submissionRoutes);
+router.use('/:taskId/submissions', taskSubmissionRoutes);
 
 export default router;

@@ -16,6 +16,43 @@ describe('Submissions', () => {
       const admin = await createUser(prisma, 'ADMIN', 'admin@test.com');
       const profesor = await createUser(prisma, 'PROFESOR', 'prof@test.com');
       const alumno = await createUser(prisma, 'ALUMNO', 'alumno@test.com');
+      const alumno2 = await createUser(prisma, 'ALUMNO', 'alumno2@test.com');
+      const curso = await createCourse({
+        prisma,
+        name: 'Curso 1',
+        professorId: profesor.id,
+      });
+      const task = await createTask({
+        prisma,
+        title: 'Tarea 1 - curso 1',
+        courseId: curso.id,
+        dueDate: new Date('02-25-2026'),
+      });
+      await createSubmission({
+        prisma,
+        taskId: task.id,
+        studentId: alumno.id,
+      });
+      await createSubmission({
+        prisma,
+        taskId: task.id,
+        studentId: alumno2.id,
+      });
+
+      const token = await loginUser(admin.email, 'hashed');
+
+      const res = await request(app)
+        .get(`/courses/${curso.id}/submissions`)
+        .set('Authorization', `Bearer ${token}`);
+
+      expect(res.status).toBe(200);
+      expect(res.body.length).toBe(2);
+    });
+
+    it('Admin puede listar entregas de cualquier tarea de cualquier curso', async () => {
+      const admin = await createUser(prisma, 'ADMIN', 'admin@test.com');
+      const profesor = await createUser(prisma, 'PROFESOR', 'prof@test.com');
+      const alumno = await createUser(prisma, 'ALUMNO', 'alumno@test.com');
       const curso = await createCourse({
         prisma,
         name: 'Curso 1',
@@ -41,6 +78,42 @@ describe('Submissions', () => {
 
       expect(res.status).toBe(200);
       expect(res.body.length).toBe(1);
+    });
+
+    it('Profesor puede listar entregas de sus curso', async () => {
+      const profesor = await createUser(prisma, 'PROFESOR', 'prof@test.com');
+      const alumno = await createUser(prisma, 'ALUMNO', 'alumno@test.com');
+      const alumno2 = await createUser(prisma, 'ALUMNO', 'alumno2@test.com');
+      const curso = await createCourse({
+        prisma,
+        name: 'Curso 1',
+        professorId: profesor.id,
+      });
+      const task = await createTask({
+        prisma,
+        title: 'Tarea 1 - curso 1',
+        courseId: curso.id,
+        dueDate: new Date('02-25-2026'),
+      });
+      await createSubmission({
+        prisma,
+        taskId: task.id,
+        studentId: alumno.id,
+      });
+      await createSubmission({
+        prisma,
+        taskId: task.id,
+        studentId: alumno2.id,
+      });
+
+      const token = await loginUser(profesor.email, 'hashed');
+
+      const res = await request(app)
+        .get(`/courses/${curso.id}/submissions`)
+        .set('Authorization', `Bearer ${token}`);
+
+      expect(res.status).toBe(200);
+      expect(res.body.length).toBe(2);
     });
 
     it('Profesor puede listar entregas de tareas de sus curso', async () => {
@@ -73,6 +146,36 @@ describe('Submissions', () => {
       expect(res.body.length).toBe(1);
     });
 
+    it('Profesor no puede listar entregas de sus curso', async () => {
+      const profesor = await createUser(prisma, 'PROFESOR', 'prof@test.com');
+      const profesor2 = await createUser(prisma, 'PROFESOR', 'prof2@test.com');
+      const alumno = await createUser(prisma, 'ALUMNO', 'alumno@test.com');
+      const curso = await createCourse({
+        prisma,
+        name: 'Curso 1',
+        professorId: profesor.id,
+      });
+      const task = await createTask({
+        prisma,
+        title: 'Tarea 1 - curso 1',
+        courseId: curso.id,
+        dueDate: new Date('02-25-2026'),
+      });
+      await createSubmission({
+        prisma,
+        taskId: task.id,
+        studentId: alumno.id,
+      });
+
+      const token = await loginUser(profesor2.email, 'hashed');
+
+      const res = await request(app)
+        .get(`/courses/${curso.id}/submissions`)
+        .set('Authorization', `Bearer ${token}`);
+
+      expect(res.status).toBe(403);
+    });
+
     it('Profesor no puede listar entregas de tareas de otros cursos', async () => {
       const profesor = await createUser(prisma, 'PROFESOR', 'prof@test.com');
       const profesor2 = await createUser(prisma, 'PROFESOR', 'prof2@test.com');
@@ -103,7 +206,43 @@ describe('Submissions', () => {
       expect(res.status).toBe(403);
     });
 
-    it('Alumno puede listar sus entregas', async () => {
+    it('Alumno puede listar sus entregas de sus curso', async () => {
+      const profesor = await createUser(prisma, 'PROFESOR', 'prof@test.com');
+      const alumno = await createUser(prisma, 'ALUMNO', 'alumno@test.com');
+      const alumno2 = await createUser(prisma, 'ALUMNO', 'alumno2@test.com');
+      const curso = await createCourse({
+        prisma,
+        name: 'Curso 1',
+        professorId: profesor.id,
+      });
+      const task = await createTask({
+        prisma,
+        title: 'Tarea 1 - curso 1',
+        courseId: curso.id,
+        dueDate: new Date('02-25-2026'),
+      });
+      await createSubmission({
+        prisma,
+        taskId: task.id,
+        studentId: alumno.id,
+      });
+      await createSubmission({
+        prisma,
+        taskId: task.id,
+        studentId: alumno2.id,
+      });
+
+      const token = await loginUser(alumno.email, 'hashed');
+
+      const res = await request(app)
+        .get(`/courses/${curso.id}/submissions`)
+        .set('Authorization', `Bearer ${token}`);
+
+      expect(res.status).toBe(200);
+      expect(res.body.length).toBe(1);
+    });
+
+    it('Alumno puede listar sus entregas de una tarea', async () => {
       const profesor = await createUser(prisma, 'PROFESOR', 'prof@test.com');
       const alumno = await createUser(prisma, 'ALUMNO', 'alumno@test.com');
       const curso = await createCourse({

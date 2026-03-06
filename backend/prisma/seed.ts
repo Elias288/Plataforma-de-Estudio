@@ -89,7 +89,7 @@ async function main() {
     },
   });
 
-  await prisma.task.upsert({
+  const tarea1 = await prisma.task.upsert({
     where: { title: 'Tarea 1' },
     update: {},
     create: {
@@ -110,6 +110,41 @@ async function main() {
     },
   });
 
+  /* Tarea no corregida */
+  await prisma.submission.upsert({
+    where: {
+      taskId_studentId: {
+        taskId: tarea1.id,
+        studentId: alumno.id,
+      },
+    },
+    update: {},
+    create: {
+      repoUrl: 'url de repo',
+      description: 'Entrega de la tarea 1',
+      studentId: alumno.id,
+      taskId: tarea1.id,
+    },
+  });
+
+  /* Tarea corregida */
+  await prisma.submission.upsert({
+    where: {
+      taskId_studentId: {
+        taskId: tarea1.id,
+        studentId: alumno2.id,
+      },
+    },
+    update: {},
+    create: {
+      repoUrl: 'url de repo',
+      description: 'Entrega de la tarea 1',
+      studentId: alumno2.id,
+      taskId: tarea1.id,
+      feedback: 'Entrega corregida',
+      grade: 5,
+    },
+  });
   console.log('✅ Carga de la base de datos completa');
 }
 

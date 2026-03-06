@@ -37,7 +37,8 @@ Backend de la Plataforma de Estudio
 
 | Descripción | Método | URL | Contenido | Roles |
 | --- | --- | --- | --- | --- |
-| Listar entregas | `GET` | `/courses/:courseId/tasks/:taskId/submissions` | - | Profesor |
+| Listar entregas | `GET` | `/courses/:courseId/submissions` | - | todos |
+| Listar entregas de tareas | `GET` | `/courses/:courseId/tasks/:taskId/submissions` | - | todos |
 | Crear entrega | `POST` | `/courses/:courseId/tasks/:taskId/submissions` | [createSubmissionSchema](./src/modules/sumissions/submission.dto.ts) | Alumno |
 | Corregir entrega | `PATCH` | `/courses/:courseId/tasks/:taskId/submissions/:submissionId/grade` | [submitGradeSchema](./src/modules/sumissions/submission.dto.ts) | Profesor |
 

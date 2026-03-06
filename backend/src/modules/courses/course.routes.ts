@@ -6,6 +6,7 @@ import { CourseController } from './course.controller';
 import { validateParams } from '@/middlewares/params.middleware';
 import { courseIdSchema } from './course.dto';
 import taskRouter from '@/modules/tasks/task.routes';
+import submissionRouter from '@/modules/sumissions/submission.routes';
 
 const router = Router();
 
@@ -42,5 +43,6 @@ router.post(
 );
 
 router.use('/:id/tasks', taskRouter);
+router.use('/:id/submissions', submissionRouter);
 
 export default router;
