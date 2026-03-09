@@ -14,7 +14,14 @@ Backend de la Plataforma de Estudio
 | Registrar Usuario | `POST` | `auth/register` | [registerSchema](./src/modules/auth/auth.dto.ts) | Admin |
 | Iniciar Sesión | `POST` | `auth/login` | [loginSchema](./src/modules/auth/auth.dto.ts) | todos |
 | Obtener información | `GET` | `auth/userInfo` | - | todos |
-| Actualizar información | `PATCH` | `auth/update/:userId` | [updateUserSchema](./src/modules/auth/auth.dto.ts) | - todos <br> - Admin: puede cambiar roles |
+
+### User
+
+| Descripción | Método | URL | Contenido | Roles |
+| --- | --- | --- | --- | --- |
+| Listar Usuarios | `GET` | `user/` | - | - Admin: todos los usuarios <br> - Profesor: solo alumnos
+| Actualizar información | `PATCH` | `user/:userId` | [updateUserSchema](./src/modules/user/user.dto.ts) | - todos <br> - Admin: puede cambiar roles |
+
 
 ### Courses
 

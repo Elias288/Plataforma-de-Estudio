@@ -16,9 +16,3 @@ authRouter.post(
 authRouter.post('/login', AuthController.login);
 
 authRouter.get('/userInfo', authenticate, AuthController.userInfo);
-
-authRouter.patch(
-  '/update/:userId',
-  authenticate,
-  AuthController.updateUserInfo,
-);

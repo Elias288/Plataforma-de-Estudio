@@ -1,6 +1,5 @@
 import { Response, Request } from 'express';
-import { loginSchema, registerSchema, updateUserSchema } from './auth.dto';
-import { AppError } from '@/errors/app.error';
+import { loginSchema, registerSchema } from './auth.dto';
 import { AuthService } from './auth.service';
 
 export class AuthController {
@@ -33,23 +32,6 @@ export class AuthController {
   static async userInfo(req: Request, res: Response) {
     const user = req.user!;
     const response = await AuthService.getUserInfo(user.id);
-    res.status(200).json(response);
-  }
-
-  static async updateUserInfo(req: Request, res: Response) {
-    const { userId } = req.params;
-    const user = req.user!;
-    const data = updateUserSchema.parse(req.body);
-
-    if (Array.isArray(userId))
-      return new AppError('Error con el parámetro ingresado');
-
-    const response = await AuthService.updateUserInfo(
-      user.id,
-      user.role,
-      userId,
-      data,
-    );
     res.status(200).json(response);
   }
 }

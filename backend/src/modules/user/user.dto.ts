@@ -1,6 +1,6 @@
 import z from 'zod';
 
-export const registerSchema = z.object({
+export const userSchema = z.object({
   email: z.email(),
   password: z.string().min(6),
   role: z.enum(['ADMIN', 'PROFESOR', 'ALUMNO']),
@@ -9,7 +9,5 @@ export const registerSchema = z.object({
   gender: z.enum(['MALE', 'FEMALE']).optional(),
 });
 
-export const loginSchema = z.object({
-  email: z.email(),
-  password: z.string().min(6),
-});
+export const updateUserSchema = userSchema.partial();
+export type UpdateUserDto = z.infer<typeof updateUserSchema>;

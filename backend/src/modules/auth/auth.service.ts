@@ -4,7 +4,6 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { env } from '@/config/env';
 import { AppError } from '@/errors/app.error';
-import { UpdateUserDto } from './auth.dto';
 
 export class AuthService {
   static async registerUser(
@@ -63,34 +62,5 @@ export class AuthService {
         id: true,
       },
     });
-  }
-
-  static async updateUserInfo(
-    userId: string,
-    role: Role,
-    userToUpdateId: string,
-    data: UpdateUserDto,
-  ) {
-    const user = await prisma.user.findUnique({
-      where: { id: userToUpdateId },
-    });
-    if (!user) throw new AppError('Usuario no encontrado', 404);
-
-    if (role === Role.ADMIN)
-      return prisma.user.update({
-        where: { id: userToUpdateId },
-        data: { ...data },
-      });
-
-    /* Usuarios no admins no pueden cambiar roles */
-    if (userId === userToUpdateId) {
-      const { role, ...rest } = data;
-      return prisma.user.update({
-        where: { id: userToUpdateId },
-        data: { ...rest },
-      });
-    }
-
-    throw new AppError('Prohibido', 403);
   }
 }
