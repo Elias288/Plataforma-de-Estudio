@@ -3,7 +3,7 @@ import CardStyled from '@/components/styles/Card.style';
 import LinkStyled from '@/components/styles/Link.Style';
 import { useEffect, useState } from 'react';
 import api from '@/api/client';
-import { useAuth, type Course, type Task } from '@/context/AuthContext';
+import { type Course, type Submission, type Task } from '@/context/AuthContext';
 import RequireRole from '@/components/RequireRole';
 
 type Props = {};
@@ -12,24 +12,24 @@ const InfoCurso = ({}: Props) => {
   const [loading, setLoading] = useState(true);
   const [course, setCourse] = useState<Course | null>(null);
   const [tareas, setTareas] = useState<Task[]>([]);
-  const { user } = useAuth();
+  const [entregas, setEntregas] = useState<Submission[]>([]);
   let params = useParams();
 
   useEffect(() => {
-    const getCursoId = async (name: string) => {
+    const getInfo = async (name: string) => {
       const res = await api.get<Course[]>('/courses');
       const cursos = res.data;
       const cursoId = cursos.find((c) => c.name === name)?.id;
 
       const infoCurso = await api.get<Course>(`/courses/${cursoId}`);
+      const submissions = await api.get<Submission[]>(`/courses/${cursoId}/submissions`);
       setCourse(infoCurso.data);
-
-      const tareasDeCurso = await api.get<Task[]>(`/courses/${cursoId}/tasks`);
-      setTareas(tareasDeCurso.data);
+      setTareas(infoCurso.data.tasks);
+      setEntregas(submissions.data.filter((s) => s !== null));
     };
 
     try {
-      if (params.cursoId) getCursoId(params.cursoId);
+      if (params.cursoId) getInfo(params.cursoId);
     } catch (error: any) {
       setError(error);
     } finally {
@@ -97,8 +97,9 @@ const InfoCurso = ({}: Props) => {
 
             <ul className="list-disc list-inside">
               {tareas.length === 0 && <p className="text-gray-400">Sin Tareas</p>}
+
               {tareas
-                .filter((tarea) => !tarea.submissions)
+                .filter((tarea) => entregas.find((e) => e.taskId !== tarea.id))
                 .map((t, key) => (
                   <li key={key}>
                     <LinkStyled to={encodeURIComponent(t.title)}>
@@ -117,8 +118,7 @@ const InfoCurso = ({}: Props) => {
             <ul className="list-disc list-inside">
               {tareas
                 .filter(
-                  (tarea) =>
-                    tarea.submissions && tarea.submissions.find((s) => s.studentId === user?.id),
+                  (tarea) => entregas.length > 0 && entregas.find((e) => e.taskId === tarea.id),
                 )
                 .map((t, key) => (
                   <li key={key}>
