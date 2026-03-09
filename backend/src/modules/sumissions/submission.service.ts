@@ -39,7 +39,16 @@ export class SubmissionService {
       include: {
         tasks: {
           include: {
-            submissions: {},
+            submissions: {
+              include: {
+                student: {
+                  select: {
+                    name: true,
+                    email: true,
+                  },
+                },
+              },
+            },
           },
         },
       },

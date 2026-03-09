@@ -148,7 +148,6 @@ export class CourseService {
         },
         tasks: {
           omit: {
-            id: true,
             courseId: true,
           },
         },
