@@ -4,9 +4,11 @@ import Perfil from '@/assets/user.svg?react';
 import { useAuth } from '@/context/AuthContext';
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useUserProfile } from '@/hooks/useUserProfile';
 
 type Props = {};
 const PerfilButton = ({}: Props) => {
+  const { perfil } = useUserProfile();
   const [open, setOpen] = useState<boolean>(false);
   const [height, setHeight] = useState(0);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -39,6 +41,13 @@ const PerfilButton = ({}: Props) => {
       >
         <div className="p-3">
           <ul className="list-none">
+            <li className="cursor-default">
+              {perfil && perfil.name
+                ? perfil.name?.at(0)?.toUpperCase() + perfil.name?.slice(1)
+                : 'cargando...'}
+            </li>
+            <hr className="border-gray-300 my-4" />
+
             <li>
               <Link
                 onClick={() => setOpen(false)}

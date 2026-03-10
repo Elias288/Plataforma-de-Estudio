@@ -1,33 +1,11 @@
-import api from '@/api/client';
 import CardStyled from '@/components/styles/Card.style';
-import { useAuth, type User } from '@/context/AuthContext';
-import { useEffect, useState } from 'react';
+import { useAuth } from '@/context/AuthContext';
+import { useUserProfile } from '@/hooks/useUserProfile';
 
 type Props = {};
 const PerfilPage = ({}: Props) => {
-  const { isAuthenticated, logout } = useAuth();
-
-  const [perfil, setPerfil] = useState<User | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (!isAuthenticated) return;
-
-    const fetchProfile = async () => {
-      try {
-        const response = await api.get<User>('/auth/userInfo');
-        setPerfil(response.data);
-      } catch (error: any) {
-        if (error.response?.status === 401) logout();
-        else setError('Error al obtener el perfil');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProfile();
-  }, [isAuthenticated]);
+  const { logout } = useAuth();
+  const { perfil, loading, error } = useUserProfile();
 
   if (loading)
     return (
@@ -35,7 +13,9 @@ const PerfilPage = ({}: Props) => {
         <CardStyled className="mx-auto max-w-125 w-full">Cargando</CardStyled>
       </div>
     );
-  if (error) return <p>{error}</p>;
+  if (error) {
+    logout();
+  }
   if (!perfil) return null;
 
   return (
@@ -45,7 +25,9 @@ const PerfilPage = ({}: Props) => {
           <h2 className="text-3xl font-bold">Mi Perfil</h2>
 
           <ul>
-            <li>{perfil.name}</li>
+            <li>
+              {perfil && perfil.name && perfil.name?.at(0)?.toUpperCase() + perfil.name?.slice(1)}
+            </li>
             <li>{perfil.email}</li>
             {perfil.age && <li>{perfil.age}</li>}
             {perfil.gender && <li>{perfil.gender}</li>}
