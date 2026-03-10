@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import ListarCursos from './components/ListarCursos';
-import { type Course } from '@/context/AuthContext';
 import api from '@/api/client';
 import RequireRole from '@/components/RequireRole';
 import Search from '@/components/Search';
 import LinkButtonStyled from '@/components/styles/LinkButton.style';
 import CardStyled from '@/components/styles/Card.style';
+import type { Course } from '@/types/Course.type';
 
 type Props = {};
 const CursosPage = ({}: Props) => {

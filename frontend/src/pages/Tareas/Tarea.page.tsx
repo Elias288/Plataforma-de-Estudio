@@ -3,7 +3,9 @@ import RequireRole from '@/components/RequireRole';
 import CardStyled from '@/components/styles/Card.style';
 import FormStyled from '@/components/styles/Form.style';
 import { FormLabel, FormTextArea } from '@/components/styles/FormLabel.style';
-import type { Course, Submission, Task } from '@/context/AuthContext';
+import type { Course } from '@/types/Course.type';
+import type { Submission } from '@/types/Submission.type';
+import type { Task } from '@/types/Task.type';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 

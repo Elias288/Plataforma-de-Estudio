@@ -1,4 +1,5 @@
-import { useAuth, type Role } from '@/context/AuthContext';
+import { useAuth } from '@/context/AuthContext';
+import type { Role } from '@/types/User.type';
 
 type Props = {
   allowedRoles: Role[];

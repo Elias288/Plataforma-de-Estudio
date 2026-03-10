@@ -1,5 +1,5 @@
 import CardStyled from '@/components/styles/Card.style';
-import type { Course } from '@/context/AuthContext';
+import type { Course } from '@/types/Course.type';
 import { Link } from 'react-router-dom';
 
 type Props = {

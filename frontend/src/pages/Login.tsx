@@ -1,6 +1,7 @@
 import api from '@/api/client';
 import { FormLabel } from '@/components/styles/FormLabel.style';
-import { useAuth, type User } from '@/context/AuthContext';
+import { useAuth } from '@/context/AuthContext';
+import type { UserLoginInfo } from '@/types/User.type';
 import { useEffect, useState, type ChangeEvent } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -27,7 +28,10 @@ const Login = () => {
       setLoading(true);
       setError(null);
 
-      const res = await api.post<{ token: string; user: User }>('/auth/login', { email, password });
+      const res = await api.post<{ token: string; user: UserLoginInfo }>('/auth/login', {
+        email,
+        password,
+      });
       const { user, token } = res.data;
 
       login(user, token);

@@ -3,8 +3,10 @@ import CardStyled from '@/components/styles/Card.style';
 import LinkStyled from '@/components/styles/Link.Style';
 import { useEffect, useState } from 'react';
 import api from '@/api/client';
-import { type Course, type Submission, type Task } from '@/context/AuthContext';
 import RequireRole from '@/components/RequireRole';
+import type { Course } from '@/types/Course.type';
+import type { Submission } from '@/types/Submission.type';
+import type { Task } from '@/types/Task.type';
 
 type Props = {};
 const InfoCurso = ({}: Props) => {
